@@ -49,6 +49,57 @@ For one to start the application, run the following comman:
 mvn spring-boot:run
 ```
 
+## Running an example
+
+Next, one can see on how to run a small example authenticating an fetching users using `curl`.
+
+In order to create a user, run the following command:
+
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "email": "email@email.com",
+    "password": "password",
+    "firstName": "first name",
+    "lastName": "last name"
+}' http://localhost:8080/users
+```
+
+Here a user with email "email@emaiol.com" is created. This is the login for the user.
+
+In order to authenticate the user, run the following command:
+
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "username": "email@email.com",
+    "password": "password"
+}' http://localhost:8080/login
+```
+
+Here is an example of the HTTP Response from the last command:
+
+```
+HTTP/1.1 200 
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbWFpbEBlbWFpbC5jb20iLCJleHAiOjE1NTE5MDAxMjJ9.hVuoNXh1VUq_w4zWZnyzjbg-LXIn4f5Z9o_x6rnW5Z7LHTseGfBi65ichqvyio8693-YOY5ZDn0IG2TNx1fRPg
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 0
+Date: Sun, 24 Feb 2019 19:22:02 GMT
+```
+
+Please note the `Authorization` part in the HTTP Header. One must copy its content into the following command, which will list a user data with email "email@email.com".
+
+```
+curl -i -H "Content-Type: application/json" \
+-H "Authorization: Bearer xxx.yyy.zzz" \
+-X GET http://localhost:8080/users?email=email@email.com
+```
+
+After running the command above, note that the body of the HTTP Response will contain the user data, except the password.
+
 ## Test coverage
 
 After running  `mvn verify` one can access the coverate report at the following file: `/derdiedas/target/site/jacoco/index.html`.

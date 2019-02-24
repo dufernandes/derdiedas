@@ -2,6 +2,7 @@ package com.derdiedas.bootstrap;
 
 import com.derdiedas.model.User;
 import com.derdiedas.repository.UserRepository;
+import com.derdiedas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +18,11 @@ public class DataLoader {
     private static final String LAST_NAME = "Last Name";
     private static final String PASSWORD = "abcde";
 
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public DataLoader(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public DataLoader(UserService userService) {
+        this.userService = userService;
         this.loadData();
     }
 
@@ -32,7 +33,7 @@ public class DataLoader {
             user.setFirstName(FIRST_NAME + index);
             user.setLastName(LAST_NAME + index);
             user.setPassword(PASSWORD + index);
-            userRepository.save(user);
+            userService.save(user);
         }
     }
 }

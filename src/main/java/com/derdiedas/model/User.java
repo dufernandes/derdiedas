@@ -2,27 +2,67 @@ package com.derdiedas.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.util.Collection;
 
+/**
+ * User entity. Also implements {@link UserDetails}
+ * which enables this entity to serve as an User for Spring
+ * framework.
+ */
 @Getter
 @Setter
 @Entity
-public class User {
+public class User implements UserDetails {
 
-	@Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-	
-	@Column(unique=true, nullable = false)
-	private String email;
-	
-	@Column(nullable = false)
-	private String password;
-	
-	@Column(nullable = false)
+
+    @Column(unique = true, nullable = false)
+    @Email(message = "Email must be in the correct format")
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private String firstName;
-    
-	@Column(nullable = false)
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

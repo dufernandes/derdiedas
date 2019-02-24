@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -24,6 +25,8 @@ import static org.mockito.Mockito.*;
 class UserServiceUnitTest {
 
     private static final String EMAIL = "login";
+    private static final String PASSWORD = "password";
+    private static final String ENCODED_PASSWORD = "encoded_password";
 
     @InjectMocks
     private UserService userService;
@@ -31,16 +34,22 @@ class UserServiceUnitTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void save_validParamter_returnSavedParameter() {
+    void save_validParameter_returnSavedParameter() {
 
         User user = mock(User.class);
+        when(user.getEmail()).thenReturn(EMAIL);
+        when(user.getPassword()).thenReturn(PASSWORD);
 
+        when(bCryptPasswordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
         when(userRepository.save(user)).thenReturn(user);
 
         User result = userService.save(user);
