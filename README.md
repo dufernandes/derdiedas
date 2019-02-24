@@ -106,7 +106,7 @@ After running  `mvn verify` one can access the coverate report at the following 
 
 ## Database
 
-In order to make things simpler, here only embedded H2 databawse is used. Also, the application is always run and tested (integration tests) using the embedded tomcat. Should one decide to change for a external, more robust database, and to an external Tomcat, in a server, for instance, one should only setup more configuration.
+In order to make things simpler, here only embedded H2 database is used. Also, the application is always run and tested (integration tests) using the embedded tomcat. Should one decide to change for a external, more robust database, and to an external Tomcat, in a server, for instance, one should only setup more configuration.
 
 ## Accessing local H2 database
 
