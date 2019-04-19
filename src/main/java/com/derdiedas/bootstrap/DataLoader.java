@@ -3,6 +3,7 @@ package com.derdiedas.bootstrap;
 import com.derdiedas.model.User;
 import com.derdiedas.repository.UserRepository;
 import com.derdiedas.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
  * Every time the application is startup, the H2 database is
  * populated with simple data.
  */
+@Slf4j
 @Component
 public class DataLoader {
 
@@ -23,7 +25,9 @@ public class DataLoader {
     @Autowired
     public DataLoader(UserService userService) {
         this.userService = userService;
+        log.info("Start loading data for embedded application...");
         this.loadData();
+        log.info("Data for embedded application loaded successfully");
     }
 
     private void loadData() {

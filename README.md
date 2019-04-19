@@ -9,6 +9,7 @@ In order to handle this project appropriately, please setup the following tools:
  - Java (JDK) 8 or higher
  - Maven 3
  - IntelliJ was used for development, but Eclipse should work
+ - Curl (only for running examples)
 
 ## Cloning the project
 
@@ -126,3 +127,10 @@ mvn javadoc:javadoc
 ```
 
 One can access it in the folder: `derdiedas/target/site/apidocs`.
+
+## References
+
+### References for authentication
+
+ - Implementing JWT Authentication on Spring Boot APIs - https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+ - Allow H2-Console with Spring Authentication - https://www.logicbig.com/tutorials/spring-framework/spring-boot/jdbc-security-with-h2-console.html

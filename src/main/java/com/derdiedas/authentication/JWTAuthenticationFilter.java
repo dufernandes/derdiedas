@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.derdiedas.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -22,6 +23,7 @@ import java.util.Date;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.derdiedas.authentication.SecurityConstants.*;
 
+@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -34,8 +36,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             credentials = new ObjectMapper()
                     .readValue(request.getInputStream(), Credentials.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            log.error("Error while reading credentials to authenticate user", ioe);
         }
 
         if (credentials == null) {
