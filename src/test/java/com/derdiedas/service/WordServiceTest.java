@@ -59,4 +59,18 @@ class WordServiceTest {
         verify(wordRepository).findByArticleAndWord(DER, MANN);
         verify(wordRepository, never()).save(theMan);
     }
+
+    @Test
+    void wordExists_wordExists_returnTrue() {
+        Word theMan = Word.builder().article(DER).word(MANN).translation(THE_MAN).build();
+        when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.of(theMan));
+
+        assertTrue(wordService.wordExists(DER, MANN));
+    }
+
+    @Test
+    void wordExists_wordDoesNotExist_returnFalse() {
+        when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.empty());
+        assertFalse(wordService.wordExists(DER, MANN));
+    }
 }

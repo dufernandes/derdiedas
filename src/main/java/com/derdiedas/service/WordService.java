@@ -33,9 +33,9 @@ public class WordService {
      * stored in the database. Note that the only arguments for checking are article and word itself. The translation
      * is irrelevant for the comparison.
      */
-    Word createWord(String article, String word, String translation) {
+    public Word createWord(String article, String word, String translation) {
 
-        if (wordRepository.findByArticleAndWord(article, word).isPresent()) {
+        if (wordExists(article, word)) {
             throw new IllegalArgumentException(MessageFormat.format("There already is a word with article {0} and german word {1}", article, word));
         }
 
@@ -46,5 +46,9 @@ public class WordService {
                 .build();
 
         return wordRepository.save(newWord);
+    }
+
+    public boolean wordExists(String article, String word) {
+        return wordRepository.findByArticleAndWord(article, word).isPresent();
     }
 }
