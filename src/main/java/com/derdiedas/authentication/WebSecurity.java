@@ -36,10 +36,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL_PATTERN).permitAll()
-                .antMatchers( "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
-                .and().csrf().ignoringAntMatchers("/h2-console/**")// don't apply CSRF protection to /h2-console
-                .and().headers().frameOptions().sameOrigin()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

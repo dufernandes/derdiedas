@@ -134,3 +134,4 @@ One can access it in the folder: `derdiedas/target/site/apidocs`.
 
  - Implementing JWT Authentication on Spring Boot APIs - https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
  - Allow H2-Console with Spring Authentication - https://www.logicbig.com/tutorials/spring-framework/spring-boot/jdbc-security-with-h2-console.html
+ - Spring Security for Spring Boot Integration Tests - https://www.baeldung.com/spring-security-integration-tests

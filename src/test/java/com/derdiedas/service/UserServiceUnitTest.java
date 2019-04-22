@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collections;
@@ -43,11 +44,20 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void save_validParameter_returnSavedParameter() {
+    void loadUserByUsername_validUserName_returnUserDetailsObject() {
+        User user = createMockUser();
 
-        User user = mock(User.class);
-        when(user.getEmail()).thenReturn(EMAIL);
-        when(user.getPassword()).thenReturn(PASSWORD);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+
+        UserDetails result = userService.loadUserByUsername(EMAIL);
+        assertNotNull(result);
+        assertEquals(EMAIL, result.getUsername());
+        verify(userRepository).findByEmail(EMAIL);
+    }
+
+    @Test
+    void save_validParameter_returnSavedParameter() {
+        User user = createMockUser();
 
         when(bCryptPasswordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
         when(userRepository.save(user)).thenReturn(user);
@@ -76,6 +86,14 @@ class UserServiceUnitTest {
         List<User> result = userService.findAllPaged(0, 3);
         assertEquals(1, result.size());
         verify(userRepository).findAll(any());
+    }
+
+    private User createMockUser() {
+        User user = mock(User.class);
+        when(user.getEmail()).thenReturn(EMAIL);
+        when(user.getUsername()).thenReturn(EMAIL);
+        when(user.getPassword()).thenReturn(PASSWORD);
+        return user;
     }
 
     private Page<User> userPage = new Page<User>() {
