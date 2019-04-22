@@ -1,0 +1,14 @@
+[[user-create]]
+
+=== User creation
+
+Sample call for creating a user
+
+.curl sample
+include::{snippets}/users/create-user/curl-request.adoc[]
+
+.request
+include::{snippets}/users/create-user/http-request.adoc[]
+
+.response
+include::{snippets}/users/create-user/http-response.adoc[]

@@ -1,0 +1,14 @@
+[[user-get-by-email]]
+
+=== Find user by email
+
+Sample call for getting a user by email
+
+.curl sample
+include::{snippets}/users/get-user-by-email/curl-request.adoc[]
+
+.request
+include::{snippets}/users/get-user-by-email/http-request.adoc[]
+
+.response
+include::{snippets}/users/get-user-by-email/http-response.adoc[]

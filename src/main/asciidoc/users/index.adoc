@@ -1,0 +1,9 @@
+[[user]]
+
+== Users API
+
+Collection of API endpoints handling users
+
+include::create.adoc[]
+
+include::get-by-email.adoc[]
