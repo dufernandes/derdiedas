@@ -1,0 +1,14 @@
+[[login-successful]]
+
+=== Successful login
+
+Sample call for successful login
+
+.curl sample
+include::{snippets}/login/login-successful/curl-request.adoc[]
+
+.request
+include::{snippets}/login/login-successful/http-request.adoc[]
+
+.response
+include::{snippets}/login/login-successful/http-response.adoc[]

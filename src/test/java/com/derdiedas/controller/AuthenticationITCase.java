@@ -1,6 +1,5 @@
 package com.derdiedas.controller;
 
-import com.derdiedas.controller.dto.BaseUserITCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -31,8 +30,6 @@ class AuthenticationITCase extends BaseUserITCase {
                 .perform(get("/users").param("email", "email@email.com0"))
                 .andDo(print())
                 .andExpect(status().isForbidden())
-                .andDo(document("user",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .andReturn();
     }
 
@@ -47,7 +44,7 @@ class AuthenticationITCase extends BaseUserITCase {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print()).andExpect(status().isOk())
-                .andDo(document("login",
+                .andDo(document("login/login-successful",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .andReturn();
     }
@@ -63,7 +60,7 @@ class AuthenticationITCase extends BaseUserITCase {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andDo(print()).andExpect(status().isUnauthorized())
-                .andDo(document("login",
+                .andDo(document("login/login-failed",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .andReturn();
     }

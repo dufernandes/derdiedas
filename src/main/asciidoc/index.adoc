@@ -1,11 +1,11 @@
-= Getting Started With Spring REST Docs
+:sectnums:
+:sectnumlevels: 5
+:toc: left
+:toclevels: 3
+:page-layout: docs
+
+= API documentation by sample
 
 This is an example output for a service running at http://localhost:8080:
 
-.request
-include::{snippets}/user/http-request.adoc[]
-
-.response
-include::{snippets}/user/http-response.adoc[]
-
-As you can see the format is very simple, and in fact you always get the same message.
+include::login/index.adoc[]

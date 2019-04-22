@@ -1,0 +1,9 @@
+[[login-index]]
+
+== Login API
+
+Collection of API endpoints for login
+
+include::login-successful.adoc[]
+
+include::login-failed.adoc[]

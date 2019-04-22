@@ -1,6 +1,5 @@
 package com.derdiedas.controller;
 
-import com.derdiedas.controller.dto.BaseUserITCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 

@@ -103,7 +103,7 @@ After running the command above, note that the body of the HTTP Response will co
 
 ## Test coverage
 
-After running  `mvn verify` one can access the coverate report at the following file: `/derdiedas/target/site/jacoco/index.html`.
+After running  `mvn clean verify package` one can access the coverate report at the following file: `/derdiedas/target/site/jacoco/index.html`.
 
 ## Database
 

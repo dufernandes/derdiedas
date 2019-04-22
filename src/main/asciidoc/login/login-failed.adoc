@@ -1,0 +1,14 @@
+[[login-failied]]
+
+=== Failed login
+
+Sample call for failed login
+
+.curl sample
+include::{snippets}/login/login-failed/curl-request.adoc[]
+
+.request
+include::{snippets}/login/login-failed/http-request.adoc[]
+
+.response
+include::{snippets}/login/login-failed/http-response.adoc[]
