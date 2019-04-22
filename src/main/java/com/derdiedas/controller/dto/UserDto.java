@@ -5,24 +5,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class UserDto {
 
     private Long id;
     private String email;
     private String firstName;
     private String lastName;
+    private Set<WordDto> wordsStudied = new HashSet<>();
+    private Set<WordDto> wordsStudying = new HashSet<>();
 
     public static UserDto buildFromUser(User user) {
-        return user != null
-                ? new UserDto(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName())
-                : null;
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto dto = null;
+        if (user != null) {
+            dto = modelMapper.map(user, UserDto.class);
+            dto.setWordsStudied(WordDto.buildFromWordSet(user.getWordsStudied()));
+            dto.setWordsStudying(WordDto.buildFromWordSet(user.getWordsStudying()));
+        }
+        return dto;
     }
 
     public static List<UserDto> buildListFromUsers(List<User> users) {

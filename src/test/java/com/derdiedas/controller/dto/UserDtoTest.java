@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.derdiedas.controller.dto.DtoUtil.*;
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserDtoTest {
 
-    private static final Long ID = 1L;
+    private static final Long USER_ID = 1L;
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String EMAIL = "email@email.com";
@@ -52,18 +54,36 @@ class UserDtoTest {
 
     private void verifyUserDto(UserDto dto) {
         assertNotNull(dto);
-        assertEquals(ID, dto.getId());
+        assertEquals(USER_ID, dto.getId());
         assertEquals(EMAIL, dto.getEmail());
         assertEquals(FIRST_NAME, dto.getFirstName());
         assertEquals(LAST_NAME, dto.getLastName());
+        assertEquals(WORD_ID_MAN,
+                dto.getWordsStudied().iterator().next().getId());
+        assertEquals(ARTICLE_MAN,
+                dto.getWordsStudied().iterator().next().getArticle());
+        assertEquals(WORD_MAN,
+                dto.getWordsStudied().iterator().next().getWord());
+        assertEquals(TRANSLATION_MAN,
+                dto.getWordsStudied().iterator().next().getTranslation());
+        assertEquals(WORD_ID_SCHOOL,
+                dto.getWordsStudying().iterator().next().getId());
+        assertEquals(ARTICLE_SCHOOL,
+                dto.getWordsStudying().iterator().next().getArticle());
+        assertEquals(WORD_SCHOOL,
+                dto.getWordsStudying().iterator().next().getWord());
+        assertEquals(TRANSLATION_SCHOOL,
+                dto.getWordsStudying().iterator().next().getTranslation());
     }
 
     private User createUserDto() {
         User user = new User();
-        user.setId(ID);
+        user.setId(USER_ID);
         user.setEmail(EMAIL);
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
+        user.setWordsStudied(singleton(createWordMan()));
+        user.setWordsStudying(singleton(createWordSchool()));
         return user;
     }
 }

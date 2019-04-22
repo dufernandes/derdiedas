@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User entity. Also implements {@link UserDetails}
@@ -35,6 +37,12 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String lastName;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Set<Word> wordsStudied = new HashSet<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Set<Word> wordsStudying = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
