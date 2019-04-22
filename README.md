@@ -118,7 +118,9 @@ After starting the application, one can access the embedded H2 database via the 
  - User Name: sa
  - Password: leave it empty
  
-## Generating and accessing Javadoc
+## Documentation
+ 
+### Generating and accessing Javadoc
 
 In order to generate the Javadoc, please run the following command:
 
@@ -128,6 +130,10 @@ mvn javadoc:javadoc
 
 One can access it in the folder: `derdiedas/target/site/apidocs`.
 
+### Generating and accessing REST API documentation
+
+API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`.
+
 ## References
 
 ### References for authentication
@@ -135,3 +141,10 @@ One can access it in the folder: `derdiedas/target/site/apidocs`.
  - Implementing JWT Authentication on Spring Boot APIs - https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
  - Allow H2-Console with Spring Authentication - https://www.logicbig.com/tutorials/spring-framework/spring-boot/jdbc-security-with-h2-console.html
  - Spring Security for Spring Boot Integration Tests - https://www.baeldung.com/spring-security-integration-tests
+ 
+### References for Spring Rest Documentation
+
+ - Spring REST Docs - Test driven documentation of your REST API - https://www.vojtechruzicka.com/spring-rest-docs/
+ - Generating documentation for your REST API with Spring REST Docs - https://g00glen00b.be/spring-rest-docs/
+ - Introduction to Spring REST Docs - https://www.baeldung.com/spring-rest-docs
+ - Creating API Documentation with Restdocs - https://spring.io/guides/gs/testing-restdocs/
