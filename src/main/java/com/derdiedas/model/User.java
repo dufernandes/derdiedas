@@ -54,6 +54,12 @@ public class User implements UserDetails {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<WordOnStudy> wordsStudying;
 
+    @Column(nullable = false)
+    private int numberOfWordsPerStudyGroup;
+
+    @Column(nullable = false)
+    private long currentStudyGroupPage;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
