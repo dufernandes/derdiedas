@@ -136,6 +136,8 @@ API documentation is provided by example. For that, while running integration te
 
 ## References
 
+Here one may find many references which were quite useful for creating this project.
+
 ### References for authentication
 
  - Implementing JWT Authentication on Spring Boot APIs - https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
@@ -148,3 +150,14 @@ API documentation is provided by example. For that, while running integration te
  - Generating documentation for your REST API with Spring REST Docs - https://g00glen00b.be/spring-rest-docs/
  - Introduction to Spring REST Docs - https://www.baeldung.com/spring-rest-docs
  - Creating API Documentation with Restdocs - https://spring.io/guides/gs/testing-restdocs/
+
+### References for Lombok
+
+ - Jacoco: exclude generated methods of Lombok - https://stackoverflow.com/questions/29520912/jacoco-exclude-generated-methods-using-it-with-lombok
+ - Sample project which excludes Lombok code from code coverage - https://github.com/rainerhahnekamp/jacocolombok
+ - Sample pom.xml using delombok with a configured target directory - https://github.com/eugenp/tutorials/blob/master/lombok/pom.xml
+ 
+ ### References for Javadoc
+ 
+ - Using Javadoc Resources - maven plugin - https://maven.apache.org/plugins/maven-javadoc-plugin/examples/javadoc-resources.html
+ - Configure source directory for javadoc in order to use delombok - https://stackoverflow.com/questions/29563593/lombok-maven-javadocaggregate-report-with-generated-sources

@@ -1,12 +1,12 @@
 package com.derdiedas.controller.dto;
 
 import com.derdiedas.model.User;
+import com.derdiedas.util.WordUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.derdiedas.controller.dto.DtoUtil.*;
 import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,22 +58,23 @@ class UserDtoTest {
         assertEquals(EMAIL, dto.getEmail());
         assertEquals(FIRST_NAME, dto.getFirstName());
         assertEquals(LAST_NAME, dto.getLastName());
-        assertEquals(WORD_ID_MAN,
+        assertEquals(WordUtil.WORD_ID_MAN,
                 dto.getWordsStudied().iterator().next().getId());
-        assertEquals(ARTICLE_MAN,
+        assertEquals(WordUtil.ARTICLE_MAN,
                 dto.getWordsStudied().iterator().next().getArticle());
-        assertEquals(WORD_MAN,
+        assertEquals(WordUtil.WORD_MAN,
                 dto.getWordsStudied().iterator().next().getWord());
-        assertEquals(TRANSLATION_MAN,
+        assertEquals(WordUtil.TRANSLATION_MAN,
                 dto.getWordsStudied().iterator().next().getTranslation());
-        assertEquals(WORD_ID_SCHOOL,
-                dto.getWordsStudying().iterator().next().getId());
-        assertEquals(ARTICLE_SCHOOL,
-                dto.getWordsStudying().iterator().next().getArticle());
-        assertEquals(WORD_SCHOOL,
-                dto.getWordsStudying().iterator().next().getWord());
-        assertEquals(TRANSLATION_SCHOOL,
-                dto.getWordsStudying().iterator().next().getTranslation());
+        assertEquals(WordUtil.WORD_ID_SCHOOL,
+                dto.getWordsStudying().iterator().next().getWordDto().getId());
+        assertEquals(WordUtil.ARTICLE_SCHOOL,
+                dto.getWordsStudying().iterator().next().getWordDto().getArticle());
+        assertEquals(WordUtil.WORD_SCHOOL,
+                dto.getWordsStudying().iterator().next().getWordDto().getWord());
+        assertEquals(WordUtil.TRANSLATION_SCHOOL,
+                dto.getWordsStudying().iterator().next().getWordDto().getTranslation());
+        assertFalse(dto.getWordsStudying().iterator().next().isStudied());
     }
 
     private User createUserDto() {
@@ -82,8 +83,8 @@ class UserDtoTest {
         user.setEmail(EMAIL);
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
-        user.setWordsStudied(singleton(createWordMan()));
-        user.setWordsStudying(singleton(createWordSchool()));
+        user.setWordsStudied(singleton(WordUtil.createWordMan()));
+        user.setWordsStudying(singleton(WordUtil.createWordOnStudySchool()));
         return user;
     }
 }

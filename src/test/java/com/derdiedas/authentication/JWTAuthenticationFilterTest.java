@@ -5,10 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -24,10 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-class JWTAuthenticationFilterTest {
+class JWTAuthenticationFilterTest extends JwtAuthenticationBase {
 
-    private static final String PRINCIPAL = "principal";
-    private static final String CREDENTIALS = "credentials";
     private static final String USER_NAME = "userName";
 
     @InjectMocks
@@ -62,13 +57,13 @@ class JWTAuthenticationFilterTest {
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(principal);
 
-        String token = filter.createJWTToken(principal);
+        String token = JwtUtils.createJWTToken(principal);
 
         HttpServletResponse response = mock(HttpServletResponse.class);
         doNothing().when(response).addHeader(HEADER_STRING, TOKEN_PREFIX + token);
 
         filter.successfulAuthentication(null, response, null, authentication);
-        verify(response).addHeader(HEADER_STRING, TOKEN_PREFIX + filter.createJWTToken(principal));
+        verify(response).addHeader(HEADER_STRING, TOKEN_PREFIX + JwtUtils.createJWTToken(principal));
     }
 
     private ServletInputStream createCredentialsIputStream() {
@@ -100,10 +95,5 @@ class JWTAuthenticationFilterTest {
         };
     }
 
-    private AuthenticationManager authenticationManager = new AuthenticationManager() {
-        @Override
-        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-            return new UsernamePasswordAuthenticationToken(PRINCIPAL, CREDENTIALS);
-        }
-    };
+
 }

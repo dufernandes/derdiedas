@@ -1,11 +1,8 @@
 package com.derdiedas.authentication;
 
-import com.auth0.jwt.JWT;
 import com.derdiedas.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,16 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.derdiedas.authentication.SecurityConstants.*;
+import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING;
+import static com.derdiedas.authentication.SecurityConstants.TOKEN_PREFIX;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -57,14 +56,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication auth) {
 
-        String token = createJWTToken((User) auth.getPrincipal());
+        String token = JwtUtils.createJWTToken((User) auth.getPrincipal());
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 
-    String createJWTToken(User user) {
-        return JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
-    }
 }

@@ -1,7 +1,6 @@
 package com.derdiedas.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,8 +18,19 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
+    /**
+     * Unique entity identifier. It is generated when the entity
+     * is created in the database.
+     *
+     * @param id JPA generated Identifier
+     *
+     * @return Unique entity identifier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -39,10 +49,10 @@ public class User implements UserDetails {
     private String lastName;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Set<Word> wordsStudied = new HashSet<>();
+    private Set<Word> wordsStudied;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Set<Word> wordsStudying = new HashSet<>();
+    private Set<WordOnStudy> wordsStudying;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

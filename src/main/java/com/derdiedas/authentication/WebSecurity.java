@@ -1,7 +1,6 @@
 package com.derdiedas.authentication;
 
 import com.derdiedas.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +19,23 @@ import static com.derdiedas.authentication.SecurityConstants.SIGN_UP_URL_PATTERN
 
 /**
  * Class responsible for authentication and authorization.
- * <br/>
+ * <br>
  * By extending {@link WebSecurityConfigurerAdapter}, we take advantage of
  * Spring default web security configuration - https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html.
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public WebSecurity(UserService userService,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,7 +54,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
      * {@link org.springframework.security.core.userdetails.UserDetailsService} we use,
      * along with the {@link org.springframework.security.crypto.password.PasswordEncoder }
      * in place.
-     * <br/>
+     * <br>
      * Based on these configurations, Spring can, for instance login a user.
      *
      * @param auth Authentication Manager builder.

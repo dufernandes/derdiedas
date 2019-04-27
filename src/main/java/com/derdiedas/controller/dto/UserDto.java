@@ -21,7 +21,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private Set<WordDto> wordsStudied = new HashSet<>();
-    private Set<WordDto> wordsStudying = new HashSet<>();
+    private Set<WordOnStudyDto> wordsStudying = new HashSet<>();
 
     public static UserDto buildFromUser(User user) {
         ModelMapper modelMapper = new ModelMapper();
@@ -29,7 +29,7 @@ public class UserDto {
         if (user != null) {
             dto = modelMapper.map(user, UserDto.class);
             dto.setWordsStudied(WordDto.buildFromWordSet(user.getWordsStudied()));
-            dto.setWordsStudying(WordDto.buildFromWordSet(user.getWordsStudying()));
+            dto.setWordsStudying(WordOnStudyDto.buildFromWordSet(user.getWordsStudying()));
         }
         return dto;
     }

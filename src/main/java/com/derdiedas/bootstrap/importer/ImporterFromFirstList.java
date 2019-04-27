@@ -16,7 +16,6 @@ import java.util.Scanner;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImporterFromFirstList implements WordsImporter {
 
     private static final String TRANSLATION_WORD_SEPARATOR = " – ";
@@ -32,6 +31,11 @@ public class ImporterFromFirstList implements WordsImporter {
     private static final int ARTICLE_WORD_PART_SIZE = 2;
 
     private final WordService wordService;
+
+    @Autowired
+    public ImporterFromFirstList(WordService wordService) {
+        this.wordService = wordService;
+    }
 
     @Override
     public void doImport() throws IOException {

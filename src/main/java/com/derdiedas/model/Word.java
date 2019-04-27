@@ -32,4 +32,11 @@ public class Word {
     @Column(nullable = false)
     @EqualsAndHashCode.Exclude
     private String translation;
+
+    public WordOnStudy createWordOnStudy(boolean isStudied) {
+        return WordOnStudy.builder()
+                .isStudied(isStudied)
+                .word(this)
+                .build();
+    }
 }
