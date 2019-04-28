@@ -55,4 +55,16 @@ public class DefaultSettings {
     @NotEmpty
     @Column(nullable = false, unique = true)
     private String name;
+
+    /**
+     * Build {@link DefaultSettings} entity using the default parameters.
+     *
+     * @return DefaultSettings using the default parameters
+     */
+    public static DefaultSettings buildWithDefaultParameters() {
+        return DefaultSettings.builder()
+                .name(DEFAULT_NAME)
+                .defaultNumberOfWordsPerStudyGroup(DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP)
+                .build();
+    }
 }
