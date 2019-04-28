@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * Entity which holds default settings used throughout the system.
@@ -22,12 +25,13 @@ public class DefaultSettings {
      */
     public static final int DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP = 10;
 
+    public static final String DEFAULT_NAME = "settingsName";
+
     /**
      * Unique entity identifier. It is generated when the entity
      * is created in the database.
      *
      * @param id JPA generated Identifier
-     *
      * @return Unique entity identifier.
      */
     @Id
@@ -39,13 +43,16 @@ public class DefaultSettings {
      * Default number of words used in each study group.
      *
      * @param defaultNumberOfWordsPerStudyGroup default number of
-     *                                          words used in
-     *                                          study groups to be set
-     *
+     * words used in
+     * study groups to be set
      * @return default number of word used in study groups
-     *
      */
-    @Min(value = 1L, message = "The value must be 1 or higher")
+    @Positive
     @Column(nullable = false)
     private int defaultNumberOfWordsPerStudyGroup;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, unique = true)
+    private String name;
 }

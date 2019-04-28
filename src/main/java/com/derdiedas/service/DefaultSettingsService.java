@@ -25,7 +25,9 @@ public class DefaultSettingsService {
     }
 
     /**
-     * Create the default settings used throughout the system.
+     * Create the default settings used throughout the system. Note that
+     * the default name define as {@link DefaultSettings#DEFAULT_NAME} is
+     * used to create this entity.
      *
      * @param defaultNumberOfWordsPerStudyGroup default number of words used
      *                                          in each study block.
@@ -37,6 +39,7 @@ public class DefaultSettingsService {
                 .save(DefaultSettings
                         .builder()
                         .defaultNumberOfWordsPerStudyGroup(defaultNumberOfWordsPerStudyGroup)
+                        .name(DefaultSettings.DEFAULT_NAME)
                         .build());
     }
 }

@@ -1,13 +1,14 @@
-package com.derdiedas.controller.dto;
+package com.derdiedas.dto;
 
 import com.derdiedas.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserToCreateDto {
 
     private String email;
@@ -16,13 +17,10 @@ public class UserToCreateDto {
     private String password;
 
     public static User toUser(UserToCreateDto userDto) {
+        ModelMapper modelMapper = new ModelMapper();
         User user = null;
         if (userDto != null) {
-            user = new User();
-            user.setEmail(userDto.getEmail());
-            user.setPassword(userDto.getPassword());
-            user.setFirstName(userDto.getFirstName());
-            user.setLastName(userDto.getLastName());
+            user = modelMapper.map(userDto, User.class);
         }
         return user;
     }

@@ -1,6 +1,6 @@
 package com.derdiedas.util;
 
-import com.derdiedas.controller.dto.WordDto;
+import com.derdiedas.dto.WordDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

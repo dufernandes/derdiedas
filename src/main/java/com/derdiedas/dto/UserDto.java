@@ -1,7 +1,6 @@
-package com.derdiedas.controller.dto;
+package com.derdiedas.dto;
 
 import com.derdiedas.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,6 +19,8 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
+    private int numberOfWordsPerStudyGroup;
+    private long currentStudyGroupPage;
     private Set<WordDto> wordsStudied = new HashSet<>();
     private Set<WordOnStudyDto> wordsStudying = new HashSet<>();
 

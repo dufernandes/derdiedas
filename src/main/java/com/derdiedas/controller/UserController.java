@@ -1,7 +1,7 @@
 package com.derdiedas.controller;
 
-import com.derdiedas.controller.dto.UserDto;
-import com.derdiedas.controller.dto.UserToCreateDto;
+import com.derdiedas.dto.UserDto;
+import com.derdiedas.dto.UserToCreateDto;
 import com.derdiedas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,6 @@ public class UserController {
     @PostMapping()
     @ResponseBody()
     public UserDto create(@Valid @RequestBody UserToCreateDto user) {
-        return UserDto.buildFromUser(userService.save(UserToCreateDto.toUser(user)));
+        return UserDto.buildFromUser(userService.createUser(user));
     }
 }

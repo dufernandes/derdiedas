@@ -1,5 +1,6 @@
-package com.derdiedas.controller.dto;
+package com.derdiedas.dto;
 
+import com.derdiedas.model.DefaultSettings;
 import com.derdiedas.model.User;
 import com.derdiedas.util.WordUtil;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,8 @@ class UserDtoTest {
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String EMAIL = "email@email.com";
+    private static final int NUMBER_OF_WORDS = DefaultSettings.DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP;
+    private static final long GROUP_PAGE = 2;
 
     @Test
     void buildFromUser_validUser_returnUserDto() {
@@ -58,6 +61,8 @@ class UserDtoTest {
         assertEquals(EMAIL, dto.getEmail());
         assertEquals(FIRST_NAME, dto.getFirstName());
         assertEquals(LAST_NAME, dto.getLastName());
+        assertEquals(NUMBER_OF_WORDS, dto.getNumberOfWordsPerStudyGroup());
+        assertEquals(GROUP_PAGE, dto.getCurrentStudyGroupPage());
         assertEquals(WordUtil.WORD_ID_MAN,
                 dto.getWordsStudied().iterator().next().getId());
         assertEquals(WordUtil.ARTICLE_MAN,
@@ -83,6 +88,8 @@ class UserDtoTest {
         user.setEmail(EMAIL);
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
+        user.setNumberOfWordsPerStudyGroup(NUMBER_OF_WORDS);
+        user.setCurrentStudyGroupPage(GROUP_PAGE);
         user.setWordsStudied(singleton(WordUtil.createWordMan()));
         user.setWordsStudying(singleton(WordUtil.createWordOnStudySchool()));
         return user;

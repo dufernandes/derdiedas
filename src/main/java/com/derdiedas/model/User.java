@@ -19,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -33,6 +34,7 @@ public class User implements UserDetails {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -49,9 +51,11 @@ public class User implements UserDetails {
     private String lastName;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private Set<Word> wordsStudied;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private Set<WordOnStudy> wordsStudying;
 
     @Column(nullable = false)

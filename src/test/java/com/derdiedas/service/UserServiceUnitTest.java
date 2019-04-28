@@ -1,7 +1,12 @@
 package com.derdiedas.service;
 
+import com.derdiedas.dto.UserToCreateDto;
+import com.derdiedas.model.DefaultSettings;
 import com.derdiedas.model.User;
+import com.derdiedas.repository.DefaultSettingsRepository;
 import com.derdiedas.repository.UserRepository;
+import com.derdiedas.util.DefaultSettingsUtil;
+import org.hibernate.validator.constraints.Mod10Check;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.derdiedas.util.DefaultSettingsUtil.createDefaultSettings;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -38,9 +44,33 @@ class UserServiceUnitTest {
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Mock
+    private DefaultSettingsRepository defaultSettingsRepository;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void createUser_validParameter_returnCreatedUser() {
+        UserToCreateDto userDto = createMockUserToCreateDto();
+        User user = UserToCreateDto.toUser(userDto);
+        user.setPassword(ENCODED_PASSWORD);
+
+        DefaultSettings defaultSettings = createDefaultSettings();
+        user.setNumberOfWordsPerStudyGroup(defaultSettings.getDefaultNumberOfWordsPerStudyGroup());
+        when(defaultSettingsRepository.findDefault()).thenReturn(defaultSettings);
+
+        mockForSave(user);
+
+        User result = userService.createUser(userDto);
+
+        assertNotNull(result);
+        verify(defaultSettingsRepository).findDefault();
+        verify(bCryptPasswordEncoder).encode(PASSWORD);
+        verify(userRepository).save(user);
+
     }
 
     @Test
@@ -59,8 +89,7 @@ class UserServiceUnitTest {
     void save_validParameter_returnSavedParameter() {
         User user = createMockUser();
 
-        when(bCryptPasswordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
-        when(userRepository.save(user)).thenReturn(user);
+        mockForSave(user);
 
         User result = userService.save(user);
         assertNotNull(result);
@@ -88,10 +117,22 @@ class UserServiceUnitTest {
         verify(userRepository).findAll(any());
     }
 
+    private void mockForSave(User user) {
+        when(bCryptPasswordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
+        when(userRepository.save(user)).thenReturn(user);
+    }
+
     private User createMockUser() {
         User user = mock(User.class);
         when(user.getEmail()).thenReturn(EMAIL);
         when(user.getUsername()).thenReturn(EMAIL);
+        when(user.getPassword()).thenReturn(PASSWORD);
+        return user;
+    }
+
+    private UserToCreateDto createMockUserToCreateDto() {
+        UserToCreateDto user = mock(UserToCreateDto.class);
+        when(user.getEmail()).thenReturn(EMAIL);
         when(user.getPassword()).thenReturn(PASSWORD);
         return user;
     }

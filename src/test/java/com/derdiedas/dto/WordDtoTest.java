@@ -1,4 +1,4 @@
-package com.derdiedas.controller.dto;
+package com.derdiedas.dto;
 
 import com.derdiedas.model.Word;
 import com.derdiedas.util.WordUtil;

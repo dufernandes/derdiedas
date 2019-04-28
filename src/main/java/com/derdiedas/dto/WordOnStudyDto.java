@@ -1,6 +1,5 @@
-package com.derdiedas.controller.dto;
+package com.derdiedas.dto;
 
-import com.derdiedas.model.Word;
 import com.derdiedas.model.WordOnStudy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
