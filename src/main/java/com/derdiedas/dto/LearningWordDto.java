@@ -1,6 +1,6 @@
 package com.derdiedas.dto;
 
-import com.derdiedas.model.WordOnStudy;
+import com.derdiedas.model.LearningWord;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,27 +14,27 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WordOnStudyDto {
+public class LearningWordDto {
     private Long id;
     private WordDto wordDto;
     private boolean isStudied;
 
-    public static WordOnStudyDto buildFromWord(WordOnStudy word) {
+    public static LearningWordDto buildFromWord(LearningWord word) {
         ModelMapper modelMapper = new ModelMapper();
-        WordOnStudyDto wordOnStudyDto = null;
+        LearningWordDto learningWordDto = null;
         if (word != null) {
-            wordOnStudyDto = modelMapper.map(word, WordOnStudyDto.class);
+            learningWordDto = modelMapper.map(word, LearningWordDto.class);
             if (word.getWord() != null) {
-                wordOnStudyDto.setWordDto(WordDto.buildFromWord(word.getWord()));
+                learningWordDto.setWordDto(WordDto.buildFromWord(word.getWord()));
             }
         }
-        return wordOnStudyDto;
+        return learningWordDto;
     }
 
-    public static Set<WordOnStudyDto> buildFromWordSet(Set<WordOnStudy> words) {
-        Set<WordOnStudyDto> dtos = Collections.emptySet();
+    public static Set<LearningWordDto> buildFromWordSet(Set<LearningWord> words) {
+        Set<LearningWordDto> dtos = Collections.emptySet();
         if (CollectionUtils.isNotEmpty(words)) {
-            dtos = words.stream().map(WordOnStudyDto::buildFromWord).collect(Collectors.toSet());
+            dtos = words.stream().map(LearningWordDto::buildFromWord).collect(Collectors.toSet());
         }
         return dtos;
     }

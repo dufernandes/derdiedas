@@ -1,5 +1,8 @@
 # Der Die Das
-**Software for helping memorizing the German articles along with their respetive words**
+
+This is a software for helping memorizing the German articles along with their respective words.
+
+This platform provides the backend API to accomplish the described goal.
 
 ## Requirements
 

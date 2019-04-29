@@ -6,8 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import javax.persistence.PersistenceException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +49,34 @@ class WordRepositoryITCase {
                 .build();
 
         entityManager.persistAndFlush(theTime);
+    }
+
+    @Test
+    void findAll_2Words_returnPagedResult() {
+        Page<Word> wordsPage = wordRepository.findAll(PageRequest.of(0, 5));
+        List<Word> words = wordsPage.getContent();
+        assertNotNull(words);
+        assertEquals(2, words.size());
+        assertTrue(words.stream()
+                .anyMatch(word -> DER.equals(word.getArticle())
+                        && MANN.equals(word.getWord())));
+        assertTrue(words.stream()
+                .anyMatch(word -> DIE.equals(word.getArticle())
+                        && ZEIT.equals(word.getWord())));
+    }
+
+    @Test
+    void findAll_maxPageExceeded_returnEmptyPageResult() {
+        Page<Word> wordsPage = wordRepository.findAll(PageRequest.of(1, 5));
+        List<Word> words = wordsPage.getContent();
+        assertNotNull(words);
+        assertEquals(0, words.size());
+        assertFalse(words.stream()
+                .anyMatch(word -> DER.equals(word.getArticle())
+                        && MANN.equals(word.getWord())));
+        assertFalse(words.stream()
+                .anyMatch(word -> DIE.equals(word.getArticle())
+                        && ZEIT.equals(word.getWord())));
     }
 
 

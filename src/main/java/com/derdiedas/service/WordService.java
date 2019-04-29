@@ -17,6 +17,11 @@ public class WordService {
 
     private final WordRepository wordRepository;
 
+    /**
+     * Constructor which holds entities to be injected.
+     *
+     * @param wordRepository {@link Word} entity repository
+     */
     @Autowired
     public WordService(WordRepository wordRepository) {
         this.wordRepository = wordRepository;

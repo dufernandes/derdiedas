@@ -22,7 +22,10 @@ public class UserController {
     @GetMapping()
     @ResponseBody
     public UserDto findUserByEmail(@RequestParam("email") String email) {
-        return UserDto.buildFromUser(userService.findByEmail(email));
+        return UserDto
+                .buildFromUser(userService
+                        .findByEmail(email
+                        ).orElseThrow(() -> new IllegalArgumentException("email does not represent any registered user")));
     }
 
     @PostMapping()

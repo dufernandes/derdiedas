@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service which holds business logic methods for the {@link User} entity.
@@ -62,21 +63,46 @@ public class UserService implements UserDetailsService {
     public User createUser(UserToCreateDto userDto) {
         User user = UserToCreateDto.toUser(userDto);
         DefaultSettings settings = defaultSettingsRepository.findDefault();
-        user.setNumberOfWordsPerStudyGroup(settings.getDefaultNumberOfWordsPerStudyGroup());
+        user.setWordsPerGroup(settings.getDefaultNumberOfWordsPerStudyGroup());
 
         return save(user);
     }
 
-    public User findByEmail(String login) {
-        return userRepository.findByEmail(login);
+    /**
+     * Find user by its email. If none if found, {@link Optional#empty()}
+     * is returned.
+     *
+     * @param email email which identifes the {@link User}
+     * @return Optional object holding a {@link User}
+     */
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public List<User> findAllPaged(int page, int size) {
-        return userRepository.findAll(PageRequest.of(page, size)).getContent();
+    /**
+     * Find a list of {@link User} entities, doing a paged search.
+     *
+     * @param offset Offset of the search
+     * @param numberOfUsers Number of users to be retrieved
+     * @return List of {@link User} entities
+     */
+    public List<User> findAllPaged(int offset, int numberOfUsers) {
+        return userRepository.findAll(PageRequest.of(offset, numberOfUsers)).getContent();
     }
 
+    /**
+     * Find a {@link UserDetails} object based on the entered userName.
+     * Note that this method is used in the interface {@link UserDetailsService},
+     * which spring authentication frameworks uses.
+     *
+     * @param userName User Name - in our case, user email
+     * @return Entity {@link UserDetails}
+     * @throws UsernameNotFoundException Exception thrown if no user is found
+     * given its userName
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return findByEmail(userName);
+        return findByEmail(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("No user was found with the userName " + userName));
     }
 }

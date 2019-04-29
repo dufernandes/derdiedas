@@ -18,7 +18,7 @@ class UserDtoTest {
     private static final String LAST_NAME = "lastName";
     private static final String EMAIL = "email@email.com";
     private static final int NUMBER_OF_WORDS = DefaultSettings.DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP;
-    private static final long GROUP_PAGE = 2;
+    private static final int GROUP_PAGE = 2;
 
     @Test
     void buildFromUser_validUser_returnUserDto() {
@@ -61,16 +61,8 @@ class UserDtoTest {
         assertEquals(EMAIL, dto.getEmail());
         assertEquals(FIRST_NAME, dto.getFirstName());
         assertEquals(LAST_NAME, dto.getLastName());
-        assertEquals(NUMBER_OF_WORDS, dto.getNumberOfWordsPerStudyGroup());
-        assertEquals(GROUP_PAGE, dto.getCurrentStudyGroupPage());
-        assertEquals(WordUtil.WORD_ID_MAN,
-                dto.getWordsStudied().iterator().next().getId());
-        assertEquals(WordUtil.ARTICLE_MAN,
-                dto.getWordsStudied().iterator().next().getArticle());
-        assertEquals(WordUtil.WORD_MAN,
-                dto.getWordsStudied().iterator().next().getWord());
-        assertEquals(WordUtil.TRANSLATION_MAN,
-                dto.getWordsStudied().iterator().next().getTranslation());
+        assertEquals(NUMBER_OF_WORDS, dto.getWordsPerGroup());
+        assertEquals(GROUP_PAGE, dto.getStudyGroupPage());
         assertEquals(WordUtil.WORD_ID_SCHOOL,
                 dto.getWordsStudying().iterator().next().getWordDto().getId());
         assertEquals(WordUtil.ARTICLE_SCHOOL,
@@ -88,10 +80,9 @@ class UserDtoTest {
         user.setEmail(EMAIL);
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
-        user.setNumberOfWordsPerStudyGroup(NUMBER_OF_WORDS);
-        user.setCurrentStudyGroupPage(GROUP_PAGE);
-        user.setWordsStudied(singleton(WordUtil.createWordMan()));
-        user.setWordsStudying(singleton(WordUtil.createWordOnStudySchool()));
+        user.setWordsPerGroup(NUMBER_OF_WORDS);
+        user.setStudyGroupPage(GROUP_PAGE);
+        user.setLearningWords(singleton(WordUtil.createLearningWordSchool()));
         return user;
     }
 }

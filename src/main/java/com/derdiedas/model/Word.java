@@ -33,8 +33,8 @@ public class Word {
     @EqualsAndHashCode.Exclude
     private String translation;
 
-    public WordOnStudy createWordOnStudy(boolean isStudied) {
-        return WordOnStudy.builder()
+    public LearningWord createLearningWord(boolean isStudied) {
+        return LearningWord.builder()
                 .isStudied(isStudied)
                 .word(this)
                 .build();

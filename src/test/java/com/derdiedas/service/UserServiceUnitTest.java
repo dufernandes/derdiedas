@@ -5,8 +5,6 @@ import com.derdiedas.model.DefaultSettings;
 import com.derdiedas.model.User;
 import com.derdiedas.repository.DefaultSettingsRepository;
 import com.derdiedas.repository.UserRepository;
-import com.derdiedas.util.DefaultSettingsUtil;
-import org.hibernate.validator.constraints.Mod10Check;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static com.derdiedas.util.DefaultSettingsUtil.createDefaultSettings;
@@ -59,7 +58,7 @@ class UserServiceUnitTest {
         user.setPassword(ENCODED_PASSWORD);
 
         DefaultSettings defaultSettings = createDefaultSettings();
-        user.setNumberOfWordsPerStudyGroup(defaultSettings.getDefaultNumberOfWordsPerStudyGroup());
+        user.setWordsPerGroup(defaultSettings.getDefaultNumberOfWordsPerStudyGroup());
         when(defaultSettingsRepository.findDefault()).thenReturn(defaultSettings);
 
         mockForSave(user);
@@ -77,7 +76,7 @@ class UserServiceUnitTest {
     void loadUserByUsername_validUserName_returnUserDetailsObject() {
         User user = createMockUser();
 
-        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
 
         UserDetails result = userService.loadUserByUsername(EMAIL);
         assertNotNull(result);
@@ -101,9 +100,9 @@ class UserServiceUnitTest {
 
         User user = mock(User.class);
 
-        when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
 
-        User result = userService.findByEmail(EMAIL);
+        User result = userService.findByEmail(EMAIL).orElse(null);
         assertNotNull(result);
         verify(userRepository).findByEmail(EMAIL);
     }

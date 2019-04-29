@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class WordOnStudy {
+public class LearningWord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

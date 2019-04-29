@@ -1,4 +1,4 @@
-package com.derdiedas.config;
+package com.derdiedas.config.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,10 +9,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * Flexible manner to map exceptions and HTTP code errors.
+ * Handle exceptions for 404 - bad request responses
  */
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class BadRequestRestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
             = { IllegalArgumentException.class })

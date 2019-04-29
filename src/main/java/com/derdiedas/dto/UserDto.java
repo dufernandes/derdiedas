@@ -19,18 +19,16 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
-    private int numberOfWordsPerStudyGroup;
-    private long currentStudyGroupPage;
-    private Set<WordDto> wordsStudied = new HashSet<>();
-    private Set<WordOnStudyDto> wordsStudying = new HashSet<>();
+    private int wordsPerGroup;
+    private int studyGroupPage;
+    private Set<LearningWordDto> wordsStudying = new HashSet<>();
 
     public static UserDto buildFromUser(User user) {
         ModelMapper modelMapper = new ModelMapper();
         UserDto dto = null;
         if (user != null) {
             dto = modelMapper.map(user, UserDto.class);
-            dto.setWordsStudied(WordDto.buildFromWordSet(user.getWordsStudied()));
-            dto.setWordsStudying(WordOnStudyDto.buildFromWordSet(user.getWordsStudying()));
+            dto.setWordsStudying(LearningWordDto.buildFromWordSet(user.getLearningWords()));
         }
         return dto;
     }

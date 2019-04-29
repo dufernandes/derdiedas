@@ -38,7 +38,7 @@ class UserRepositoryITCase {
         user.setPassword(PASSWORD);
 
         entityManager.persist(user);
-        User result = userRepository.findByEmail(EMAIL);
+        User result = userRepository.findByEmail(EMAIL).orElse(null);
         assertNotNull(result);
         assertEquals(EMAIL, result.getEmail());
         assertEquals(FIRST_NAME, result.getFirstName());

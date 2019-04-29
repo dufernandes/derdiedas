@@ -1,7 +1,7 @@
 package com.derdiedas.util;
 
 import com.derdiedas.model.Word;
-import com.derdiedas.model.WordOnStudy;
+import com.derdiedas.model.LearningWord;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,8 +34,8 @@ public class WordUtil {
                 .build();
     }
 
-    public static WordOnStudy createWordOnStudySchool() {
-        return createWordSchool().createWordOnStudy(false);
+    public static LearningWord createLearningWordSchool() {
+        return createWordSchool().createLearningWord(false);
     }
 
     public static void verifyWordMan(Word word) {
@@ -46,10 +46,10 @@ public class WordUtil {
         assertEquals(TRANSLATION_MAN, word.getTranslation());
     }
 
-    public static void verifyWordOnStudyMan(WordOnStudy wordOnStudy, boolean isStudied) {
-        assertNotNull(wordOnStudy);
-        assertEquals(isStudied, wordOnStudy.isStudied());
-        assertNotNull(wordOnStudy.getWord());
-        verifyWordMan(wordOnStudy.getWord());
+    public static void verifyLearningWordMan(LearningWord learningWord, boolean isStudied) {
+        assertNotNull(learningWord);
+        assertEquals(isStudied, learningWord.isStudied());
+        assertNotNull(learningWord.getWord());
+        verifyWordMan(learningWord.getWord());
     }
 }

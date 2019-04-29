@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -52,17 +51,13 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
-    private Set<Word> wordsStudied;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    private Set<WordOnStudy> wordsStudying;
+    private Set<LearningWord> learningWords;
 
     @Column(nullable = false)
-    private int numberOfWordsPerStudyGroup;
+    private int wordsPerGroup;
 
     @Column(nullable = false)
-    private long currentStudyGroupPage;
+    private int studyGroupPage;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
