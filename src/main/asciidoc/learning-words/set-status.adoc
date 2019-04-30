@@ -1,0 +1,16 @@
+[[user-assign-learning-words]]
+
+=== Change the status of a Learning word
+
+Given a Learning Word, set it either as studied or not studied.
+
+Note that, new ones will only be assigned if all have been marked as learned. Moreover, if the user has no learning words, the first ones will be assigned to her/him.
+
+.curl sample
+include::{snippets}/learning-words/set-status/curl-request.adoc[]
+
+.request
+include::{snippets}/learning-words/set-status/http-request.adoc[]
+
+.response
+include::{snippets}/learning-words/set-status/http-response.adoc[]

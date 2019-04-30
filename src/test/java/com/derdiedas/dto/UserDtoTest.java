@@ -64,13 +64,13 @@ class UserDtoTest {
         assertEquals(NUMBER_OF_WORDS, dto.getWordsPerGroup());
         assertEquals(GROUP_PAGE, dto.getStudyGroupPage());
         assertEquals(WordUtil.WORD_ID_SCHOOL,
-                dto.getWordsStudying().iterator().next().getWordDto().getId());
+                dto.getWordsStudying().iterator().next().getWord().getId());
         assertEquals(WordUtil.ARTICLE_SCHOOL,
-                dto.getWordsStudying().iterator().next().getWordDto().getArticle());
+                dto.getWordsStudying().iterator().next().getWord().getArticle());
         assertEquals(WordUtil.WORD_SCHOOL,
-                dto.getWordsStudying().iterator().next().getWordDto().getWord());
+                dto.getWordsStudying().iterator().next().getWord().getWord());
         assertEquals(WordUtil.TRANSLATION_SCHOOL,
-                dto.getWordsStudying().iterator().next().getWordDto().getTranslation());
+                dto.getWordsStudying().iterator().next().getWord().getTranslation());
         assertFalse(dto.getWordsStudying().iterator().next().isStudied());
     }
 

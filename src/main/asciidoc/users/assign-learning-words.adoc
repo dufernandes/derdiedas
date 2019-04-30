@@ -1,0 +1,16 @@
+[[user-assign-learning-words]]
+
+=== Assign learning words to a user
+
+Given a user, the next learning words will be assigned to him her.
+
+Note that, new ones will only be assigned if all have been marked as learned. Moreover, if the user has no learning words, the first ones will be assigned to her/him.
+
+.curl sample
+include::{snippets}/users/assign-learning-words/curl-request.adoc[]
+
+.request
+include::{snippets}/users/assign-learning-words/http-request.adoc[]
+
+.response
+include::{snippets}/users/assign-learning-words/http-response.adoc[]

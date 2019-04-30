@@ -3,6 +3,7 @@ package com.derdiedas.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Word entity. It holds entity which will customers will use
@@ -32,6 +33,14 @@ public class Word {
     @Column(nullable = false)
     @EqualsAndHashCode.Exclude
     private String translation;
+
+    @Singular
+    @OneToMany(
+            mappedBy = "word",
+            cascade = CascadeType.ALL
+    )
+    @EqualsAndHashCode.Exclude
+    private Set<LearningWord> learningWords;
 
     public LearningWord createLearningWord(boolean isStudied) {
         return LearningWord.builder()

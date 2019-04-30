@@ -11,3 +11,5 @@ This is an example output for a service running at http://localhost:8080:
 include::login/index.adoc[]
 
 include::users/index.adoc[]
+
+include::learning-words/index.adoc[]

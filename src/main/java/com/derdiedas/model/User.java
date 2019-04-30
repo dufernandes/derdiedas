@@ -49,6 +49,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String lastName;
 
+    @Singular
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     private Set<LearningWord> learningWords;

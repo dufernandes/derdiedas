@@ -34,6 +34,14 @@ public class WordUtil {
                 .build();
     }
 
+    public static Word createWordSchoolWithoutId() {
+        return Word.builder()
+                .article(ARTICLE_SCHOOL)
+                .word(WORD_SCHOOL)
+                .translation(TRANSLATION_SCHOOL)
+                .build();
+    }
+
     public static LearningWord createLearningWordSchool() {
         return createWordSchool().createLearningWord(false);
     }

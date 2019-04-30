@@ -7,3 +7,5 @@ Collection of API endpoints handling users
 include::create.adoc[]
 
 include::get-by-email.adoc[]
+
+include::assign-learning-words.adoc[]

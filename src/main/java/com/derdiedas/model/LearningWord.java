@@ -25,6 +25,6 @@ public class LearningWord {
     @Column(nullable = false)
     private boolean isStudied;
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Word word;
 }

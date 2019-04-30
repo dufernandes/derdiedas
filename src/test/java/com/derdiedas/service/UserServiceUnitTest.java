@@ -3,28 +3,27 @@ package com.derdiedas.service;
 import com.derdiedas.dto.UserToCreateDto;
 import com.derdiedas.model.DefaultSettings;
 import com.derdiedas.model.User;
+import com.derdiedas.model.Word;
 import com.derdiedas.repository.DefaultSettingsRepository;
 import com.derdiedas.repository.UserRepository;
+import com.derdiedas.repository.WordRepository;
+import com.derdiedas.util.UserUtil;
+import com.derdiedas.util.WordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.derdiedas.util.DefaultSettingsUtil.createDefaultSettings;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.derdiedas.util.UserUtil.USER_ID;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -46,9 +45,87 @@ class UserServiceUnitTest {
     @Mock
     private DefaultSettingsRepository defaultSettingsRepository;
 
+    @Mock
+    private WordRepository wordRepository;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void assignLearningWordsToUser_userContainsLearningWords_returnLearningWords() {
+        Word school = WordUtil.createWordSchool();
+        User user = UserUtil.createUser();
+
+        Page<Word> page = new PageImpl<>(Collections.singletonList(school));
+
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+        when(wordRepository.findAll(PageRequest.of(user.getStudyGroupPage(), user.getWordsPerGroup())))
+                .thenReturn(page);
+        when(userRepository.save(user)).thenReturn(user);
+
+        User result = userService.assignLearningWordsToUser(USER_ID);
+        assertNotNull(result);
+        assertEquals(1, result.getLearningWords().size());
+        assertEquals(school.createLearningWord(false), result.getLearningWords().iterator().next());
+        verify(userRepository).findById(USER_ID);
+        verify(wordRepository).findAll(PageRequest.of(user.getStudyGroupPage(), user.getWordsPerGroup()));
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void assignLearningWordsToUser_userNoLearningWords_returnLearningWords() {
+        User user = UserUtil.createUser();
+        user.setLearningWords(new HashSet<>());
+
+        Page<Word> page = new PageImpl<>(Collections.emptyList());
+
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+        when(wordRepository.findAll(PageRequest.of(user.getStudyGroupPage(), user.getWordsPerGroup())))
+                .thenReturn(page);
+        when(userRepository.save(user)).thenReturn(user);
+
+        User result = userService.assignLearningWordsToUser(USER_ID);
+        assertNotNull(result);
+        assertEquals(0, result.getLearningWords().size());
+        verify(userRepository).findById(USER_ID);
+        verify(wordRepository).findAll(PageRequest.of(user.getStudyGroupPage(), user.getWordsPerGroup()));
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void assignLearningWordsToUser_userLearnedLearningWords_returnLearningWords() {
+        Word school = WordUtil.createWordSchool();
+        User user = UserUtil.createUser();
+        user.getLearningWords().iterator().next().setStudied(true);
+        int increasedGroupPage = user.getStudyGroupPage() + 1;
+
+        Page<Word> page = new PageImpl<>(Collections.singletonList(school));
+
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+        when(wordRepository.findAll(PageRequest.of(increasedGroupPage, user.getWordsPerGroup())))
+                .thenReturn(page);
+        when(userRepository.save(user)).thenReturn(user);
+
+        User result = userService.assignLearningWordsToUser(USER_ID);
+        assertNotNull(result);
+        assertEquals(1, result.getLearningWords().size());
+        assertEquals(school.createLearningWord(false), result.getLearningWords().iterator().next());
+        verify(userRepository).findById(USER_ID);
+        verify(wordRepository).findAll(PageRequest.of(increasedGroupPage, user.getWordsPerGroup()));
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void assignLearningWordsToUser_invalidEmail_throwException() {
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.assignLearningWordsToUser(USER_ID);
+        });
+
+        verify(userRepository).findById(USER_ID);
     }
 
     @Test

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserUtil {
 
-    private static final Long USER_ID = 1L;
+    public static final Long USER_ID = 1L;
     public static final String EMAIL = "email@email.com";
     private static final String PASSWORD = "password";
     private static final String FIRST_NAME = "firstName";
@@ -19,6 +19,7 @@ public class UserUtil {
 
     public static User createUser() {
         return User.builder()
+                .id(USER_ID)
                 .email(EMAIL)
                 .password(PASSWORD)
                 .firstName(FIRST_NAME)

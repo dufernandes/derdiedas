@@ -1,0 +1,9 @@
+[[learning-words]]
+
+== Learning Words API
+
+Collection of API endpoints handling Learning Words.
+
+Clarifying, a Learning Word is a word which the user is studying. When finished, its status of study will be true.
+
+include::set-status.adoc[]

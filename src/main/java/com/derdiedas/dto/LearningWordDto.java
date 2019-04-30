@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class LearningWordDto {
     private Long id;
-    private WordDto wordDto;
+    private WordDto word;
     private boolean isStudied;
 
     public static LearningWordDto buildFromWord(LearningWord word) {
@@ -25,7 +25,7 @@ public class LearningWordDto {
         if (word != null) {
             learningWordDto = modelMapper.map(word, LearningWordDto.class);
             if (word.getWord() != null) {
-                learningWordDto.setWordDto(WordDto.buildFromWord(word.getWord()));
+                learningWordDto.setWord(WordDto.buildFromWord(word.getWord()));
             }
         }
         return learningWordDto;

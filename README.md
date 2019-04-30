@@ -164,3 +164,9 @@ Here one may find many references which were quite useful for creating this proj
  
  - Using Javadoc Resources - maven plugin - https://maven.apache.org/plugins/maven-javadoc-plugin/examples/javadoc-resources.html
  - Configure source directory for javadoc in order to use delombok - https://stackoverflow.com/questions/29563593/lombok-maven-javadocaggregate-report-with-generated-sources
+ 
+ ### References for REST API
+ 
+ - REST Resource Naming Guide - https://restfulapi.net/resource-naming/
+ - Restful API design: methods - https://restful-api-design.readthedocs.io/en/latest/methods.html 
+ - PUT versus POST - https://stackoverflow.com/questions/630453/put-vs-post-in-rest

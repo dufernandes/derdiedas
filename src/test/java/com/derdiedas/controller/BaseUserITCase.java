@@ -1,6 +1,8 @@
 package com.derdiedas.controller;
 
+import com.derdiedas.dto.UserDto;
 import com.derdiedas.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -20,8 +23,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
@@ -31,6 +33,9 @@ public class BaseUserITCase {
     protected UserRepository userRepository;
 
     protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,
@@ -42,7 +47,7 @@ public class BaseUserITCase {
     }
 
 
-    protected void createUser(String email, String password, String firstName, String lastName) throws Exception {
+    protected UserDto createUser(String email, String password, String firstName, String lastName) throws Exception {
         String body = "{\n" +
                 "    \"email\": \"" + email + "\",\n" +
                 "    \"password\": \"" + password + "\",\n" +
@@ -50,7 +55,7 @@ public class BaseUserITCase {
                 "    \"lastName\": \"" + lastName + "\"\n" +
                 "}";
 
-        this.mockMvc
+        MvcResult mvcResult = this.mockMvc
                 .perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
@@ -61,6 +66,9 @@ public class BaseUserITCase {
                 .andDo(document("users/create-user",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .andReturn();
+
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        return objectMapper.readValue(contentAsString, UserDto.class);
     }
 
     protected void findUserByEmail(String email) throws Exception {
