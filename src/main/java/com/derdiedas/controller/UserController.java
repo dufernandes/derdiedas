@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.derdiedas.controller.QueryStringConstants.ACTION_ASSIGN_LEARNING_WORDS;
+import static com.derdiedas.controller.QueryStringConstants.*;
 
 @RestController
 @RequestMapping(path = "users")
@@ -23,11 +23,26 @@ public class UserController {
 
     @GetMapping()
     @ResponseBody
-    public UserDto findUserByEmail(@RequestParam("email") String email) {
-        return UserDto
-                .buildFromUser(userService
-                        .findByEmail(email
-                        ).orElseThrow(() -> new IllegalArgumentException("email does not represent any registered user")));
+    public UserDto findUserByIdOrEmail(@RequestParam("fetchType") String fetchType, @RequestParam("idOrEmail") String idOrEmail) {
+        UserDto userDto;
+        switch (fetchType) {
+            case FETCH_TYPE_EMAIL:
+                userDto = UserDto
+                        .buildFromUser(userService
+                                .findUserByEmail(idOrEmail
+                                ).orElseThrow(() -> new IllegalArgumentException("email does not represent any registered user")));
+                break;
+            case FETCH_TYPE_ID:
+                userDto = UserDto
+                        .buildFromUser(userService
+                                .findUserById(Long.parseLong(idOrEmail)
+                                ).orElseThrow(() -> new IllegalArgumentException("id does not represent any registered user")));
+                break;
+            default:
+                throw new IllegalArgumentException("fetchType does not represent any implemented type");
+
+        }
+        return userDto;
     }
 
     @PostMapping()

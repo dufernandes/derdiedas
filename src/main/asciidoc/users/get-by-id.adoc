@@ -1,0 +1,14 @@
+[[user-get-by-id]]
+
+=== Find user by id
+
+Sample call for getting a user by id
+
+.curl sample
+include::{snippets}/users/get-user-by-id/curl-request.adoc[]
+
+.request
+include::{snippets}/users/get-user-by-id/http-request.adoc[]
+
+.response
+include::{snippets}/users/get-user-by-id/http-response.adoc[]

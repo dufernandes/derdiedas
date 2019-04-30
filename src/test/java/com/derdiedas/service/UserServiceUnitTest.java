@@ -22,13 +22,13 @@ import java.util.*;
 import java.util.function.Function;
 
 import static com.derdiedas.util.DefaultSettingsUtil.createDefaultSettings;
-import static com.derdiedas.util.UserUtil.USER_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
 class UserServiceUnitTest {
 
+    private static final long USER_ID = 3L;
     private static final String EMAIL = "login";
     private static final String PASSWORD = "password";
     private static final String ENCODED_PASSWORD = "encoded_password";
@@ -173,15 +173,27 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void findByEmail_validLogin_returnUser() {
+    void findUserByEmail_validLogin_returnUser() {
 
         User user = mock(User.class);
 
         when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
 
-        User result = userService.findByEmail(EMAIL).orElse(null);
+        User result = userService.findUserByEmail(EMAIL).orElse(null);
         assertNotNull(result);
         verify(userRepository).findByEmail(EMAIL);
+    }
+
+    @Test
+    void findUserById_validId_returnUser() {
+
+        User user = mock(User.class);
+
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+
+        User result = userService.findUserById(USER_ID).orElse(null);
+        assertNotNull(result);
+        verify(userRepository).findById(USER_ID);
     }
 
     @Test

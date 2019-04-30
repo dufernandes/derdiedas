@@ -125,13 +125,24 @@ public class UserService implements UserDetailsService {
     }
 
     /**
+     * Find user by its id. If none if found, {@link Optional#empty()}
+     * is returned.
+     *
+     * @param id User identifier
+     * @return Optional object holding a {@link User}
+     */
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    /**
      * Find user by its email. If none if found, {@link Optional#empty()}
      * is returned.
      *
-     * @param email email which identifes the {@link User}
+     * @param email email which identifies the {@link User}
      * @return Optional object holding a {@link User}
      */
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -158,7 +169,7 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return findByEmail(userName)
+        return findUserByEmail(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("No user was found with the userName " + userName));
     }
 
