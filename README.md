@@ -53,6 +53,17 @@ For one to start the application, run the following comman:
 mvn spring-boot:run
 ```
 
+## Running the application with local database
+
+Here is is shown how to run the application using a local database. Postgres is configured by default, however changing the database is simple enough. Please note that all queries are created using JPQL, thus one can use all JPA supported SQL Databases.
+
+1. Setup your local Postgres. [Here](https://help.ubuntu.com/community/PostgreSQL) is a nice tutorial for Ubuntu. Install the server and the client (PgAdmin).
+2. Create a user for accessing databases. Please check the config file (`resources/application-localdb.properties`) to set it up.
+2. Create the database. It is used one called `derdiedas`, which of course can be easily changed.
+3. The the application using the `localdb` profile, as follows: `mvn spring-boot:run -Dspring-boot.run.profiles=localdb`
+
+For now, it is configured for all tables to be created. Also, the dabase is populated via the script in `com.derdiedas.bootstrap.DataLoader`.
+
 ## Running an example
 
 Next, one can see on how to run a small example authenticating an fetching users using `curl`.
@@ -178,3 +189,7 @@ Here one may find many references which were quite useful for creating this proj
  - REST Resource Naming Guide - https://restfulapi.net/resource-naming/
  - Restful API design: methods - https://restful-api-design.readthedocs.io/en/latest/methods.html 
  - PUT versus POST - https://stackoverflow.com/questions/630453/put-vs-post-in-rest
+ 
+ ### References to Postgres
+ 
+ - Install Postgres on Ubuntu - https://help.ubuntu.com/community/PostgreSQL

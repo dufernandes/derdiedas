@@ -21,6 +21,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="`user`")
 public class User implements UserDetails {
 
     /**
