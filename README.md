@@ -114,6 +114,14 @@ In order to make things simpler, here only embedded H2 database is used. Also, t
 
 ## Accessing local H2 database
 
+In order to access the H2 database, one must access the application without security, for that run the following command:
+
+```
+mvn spring-boot:run -Dspring-boot.run.profiles=nosecure
+```
+
+Note that the profile `nosecure` is being used. Basically it disables Spring Security, so H2 can be accessed.
+
 After starting the application, one can access the embedded H2 database via the following URL: [http://localhost:8080/h2-console/](http://localhost:8080/h2-console/). Here is the configuration needed:
  - Setting Name: Generic H2 (Embedded)
  - Driver Cass: org.h2.Driver
