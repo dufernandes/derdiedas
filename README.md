@@ -110,7 +110,7 @@ Please note the `Authorization` part in the HTTP Header. One must copy its conte
 ```
 curl -i -H "Content-Type: application/json" \
 -H "Authorization: Bearer xxx.yyy.zzz" \
--X GET http://localhost:8080/users?email=email@email.com
+-X GET "http://localhost:8080/users?fetchType=email&idOrEmail=email@email.com"
 ```
 
 After running the command above, note that the body of the HTTP Response will contain the user data, except the password.

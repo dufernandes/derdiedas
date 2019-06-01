@@ -127,6 +127,8 @@
     </dependencies>
 
     <build>
+        <!-- define app jar name -->
+        <finalName>derdieidas</finalName>
         <plugins>
 
             <!-- force maven 3 plugin usage -->

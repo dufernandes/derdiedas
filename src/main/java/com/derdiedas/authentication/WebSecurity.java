@@ -27,7 +27,7 @@ import static com.derdiedas.authentication.SecurityConstants.SIGN_UP_URL_PATTERN
 @Configuration
 @EnableWebSecurity
 // this bean is only instantiated when the profile nosecure
-// is used. The nosecure profile is used to lauch the application
+// is used. The nosecure profile is used to launch the application
 // without security
 @Profile("!nosecure")
 public class WebSecurity extends WebSecurityConfigurerAdapter {
