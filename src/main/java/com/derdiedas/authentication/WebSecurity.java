@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static com.derdiedas.authentication.SecurityConstants.STATIC_DOCS_URL_PATTERN;
 import static com.derdiedas.authentication.SecurityConstants.SIGN_UP_URL_PATTERN;
 
 /**
@@ -46,6 +47,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL_PATTERN).permitAll()
+                // allow static docs
+                .antMatchers(STATIC_DOCS_URL_PATTERN).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

@@ -172,6 +172,8 @@ Here one may find many references which were quite useful for creating this proj
  - Generating documentation for your REST API with Spring REST Docs - https://g00glen00b.be/spring-rest-docs/
  - Introduction to Spring REST Docs - https://www.baeldung.com/spring-rest-docs
  - Creating API Documentation with Restdocs - https://spring.io/guides/gs/testing-restdocs/
+ - Making REST Docs available on the created jar - _stackoverflow answer_ - https://stackoverflow.com/questions/49558157/publish-spring-restdocs-html-documentation-with-application
+ - Making REST Docs available on the created jar - https://docs.spring.io/spring-restdocs/docs/current/reference/html5/#getting-started-build-configuration-packaging-the-documentation
 
 ### References for Lombok
 

@@ -251,6 +251,7 @@
                 </executions>
             </plugin>
 
+            <!-- apply javadocs in delomboked directory -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -261,6 +262,7 @@
                 </configuration>
             </plugin>
 
+            <!-- setup restdocs -->
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -277,6 +279,33 @@
                             <attributes>
                                 <snippets>${snippetsDirectory}</snippets>
                             </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- copy resources to a static directory which will be made available on the generate jar file -->
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <!-- copy restdocs documentation to jar so it is available in /docs/api/index.html -->
+                    <execution>
+                        <id>copy-resources-restdocs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.outputDirectory}/static/docs/api
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        ${project.build.directory}/generated-docs
+                                    </directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
