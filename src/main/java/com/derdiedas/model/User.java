@@ -51,7 +51,9 @@ public class User implements UserDetails {
     private String lastName;
 
     @Singular
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
     @EqualsAndHashCode.Exclude
     private Set<LearningWord> learningWords;
 
