@@ -17,6 +17,13 @@ import javax.persistence.*;
 @Entity
 public class LearningWord {
 
+    /**
+     * Unique entity identifier. It is generated when the entity
+     * is created in the database.
+     *
+     * @param id JPA generated Identifier
+     * @return Unique entity identifier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Exclude
