@@ -45,3 +45,6 @@ hs_err_pid*
 /dist/
 /nbdist/
 /target/
+
+### cockroachdb local directory ###
+/cockroach-data/

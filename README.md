@@ -62,7 +62,17 @@ Here is is shown how to run the application using a local database. Postgres is 
 2. Create the database. It is used one called `derdiedas`, which of course can be easily changed.
 3. The the application using the `localdb` profile, as follows: `mvn spring-boot:run -Dspring-boot.run.profiles=localdb`
 
-For now, it is configured for all tables to be created. Also, the dabase is populated via the script in `com.derdiedas.bootstrap.DataLoader`.
+For now, it is configured for all tables to be created. Also, the database is populated via the script in `com.derdiedas.bootstrap.DataLoader`.
+
+### Special profile for cockroachdb
+
+As an experiment, there is a profile setup to run the application using [cockroachdb](https://www.cockroachlabs.com/). In order to use it, run the application as:
+
+```
+mvn spring-boot:run -Dspring-boot.run.profiles=localcockroachdb
+```
+
+Note that this is only a manner to show that this application can be easily run in different databases. In order to set it up properly, it is highly recommended to go through [this tutorial](https://www.baeldung.com/cockroachdb-java).
 
 ## Running an example
 
@@ -121,7 +131,7 @@ After running  `mvn clean verify package` one can access the coverate report at 
 
 ## Database
 
-In order to make things simpler, here only embedded H2 database is used. Also, the application is always run and tested (integration tests) using the embedded tomcat. Should one decide to change for a external, more robust database, and to an external Tomcat, in a server, for instance, one should only setup more configuration.
+In order to make things simpler, by default embedded H2 database is used while running the software locally. Also, the application is always run and tested (integration tests) using the embedded tomcat. Should one decide to change for a external, more robust database, and to an external Tomcat, in a server, for instance, one should only change the setup for that.
 
 ## Accessing local H2 database
 
@@ -195,3 +205,7 @@ Here one may find many references which were quite useful for creating this proj
  ### References to Postgres
  
  - Install Postgres on Ubuntu - https://help.ubuntu.com/community/PostgreSQL
+ 
+ ### References to CockroachDB
+ 
+ - Guide to CockroachDB in Java - https://www.baeldung.com/cockroachdb-java
