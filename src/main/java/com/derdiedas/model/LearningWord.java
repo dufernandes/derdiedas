@@ -27,7 +27,4 @@ public class LearningWord {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Word word;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
 }

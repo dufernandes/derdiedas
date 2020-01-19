@@ -164,7 +164,7 @@ One can access it in the folder: `derdiedas/target/site/apidocs`.
 
 ### Generating and accessing REST API documentation
 
-API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`.
+API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`. Alternatively, one may access this documentation, after starting the software at the following URL: http;//APP_DOMAIN/docs/api/index.html. For instance, running in the local environment, the URL would be: http://localhost:8080/docs/api/index.html
 
 ## References
 

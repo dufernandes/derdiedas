@@ -21,7 +21,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="`user`")
+@Table(name = "`user`")
 public class User implements UserDetails {
 
     /**
@@ -29,7 +29,6 @@ public class User implements UserDetails {
      * is created in the database.
      *
      * @param id JPA generated Identifier
-     *
      * @return Unique entity identifier.
      */
     @Id
@@ -51,9 +50,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Singular
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY,
-            mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     private Set<LearningWord> learningWords;
 
