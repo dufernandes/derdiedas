@@ -162,6 +162,24 @@ mvn javadoc:javadoc
 
 One can access it in the folder: `derdiedas/target/site/apidocs`.
 
+## Dockernizing the application
+
+One may also run the application in a docker container. Note tha a `Dockerfile` already exists. Building and running a image, assumes one is using a local H2 database, as it is done for development.
+
+In order to create an image, run the following command (one needs docker installed and configured locally):
+
+```
+docker build --tag derdiedas .
+```
+
+In order to run the image in port 80, simply run:
+
+```
+docker container run -p 80:8080 derdiedas
+```
+
+Now, one can access http://localhost and check that the application is up and running.
+
 ### Generating and accessing REST API documentation
 
 API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`. Alternatively, one may access this documentation, after starting the software at the following URL: http;//APP_DOMAIN/docs/api/index.html. For instance, running in the local environment, the URL would be: http://localhost:8080/docs/api/index.html
