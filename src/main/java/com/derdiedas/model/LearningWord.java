@@ -22,9 +22,21 @@ public class LearningWord {
     @EqualsAndHashCode.Exclude
     private Long id;
 
+    /**
+     * Determines whether the {@link Word} wrapped here was already studied (true).
+     *
+     * @param isStudied true if the word was already studied, false otherwise.
+     * @return The status of the word regarding of whether it was studied.
+     */
     @Column(nullable = false)
     private boolean isStudied;
 
+    /**
+     * The {@link Word} object which a user will study.
+     *
+     * @param word Word to be studied.
+     * @return The {@link Word} object to be studied.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     private Word word;
 }

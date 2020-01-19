@@ -8,4 +8,5 @@ class SecurityConstants {
     static final String HEADER_STRING = "Authorization";
     static final String SIGN_UP_URL_PATTERN = "/users/**";
     static final String STATIC_DOCS_URL_PATTERN = "/docs/**";
+    static final String ROOT_URL_PATTERN = "/";
 }
