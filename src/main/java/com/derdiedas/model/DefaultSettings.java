@@ -3,7 +3,6 @@ package com.derdiedas.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -25,6 +24,9 @@ public class DefaultSettings {
      */
     public static final int DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP = 10;
 
+    /**
+     * Key for the used default settings name in the system.
+     */
     public static final String DEFAULT_NAME = "settingsName";
 
     /**
@@ -42,15 +44,20 @@ public class DefaultSettings {
     /**
      * Default number of words used in each study group.
      *
-     * @param defaultNumberOfWordsPerStudyGroup default number of
-     * words used in
-     * study groups to be set
+     * @param defaultNumberOfWordsPerStudyGroup default number ofwords used instudy groups to be set
      * @return default number of word used in study groups
      */
     @Positive
     @Column(nullable = false)
     private int defaultNumberOfWordsPerStudyGroup;
 
+    /**
+     * Name which uniquely identified the settings being used. This means
+     * the system could hold several settings.
+     *
+     * @param name Settings name.
+     * @return Settings name.
+     */
     @NotNull
     @NotEmpty
     @Column(nullable = false, unique = true)
