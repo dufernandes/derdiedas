@@ -4,5 +4,7 @@ import java.io.IOException;
 
 public interface WordsImporter {
 
-    void doImport() throws IOException;
+    ImportResult doImport() throws IOException;
+
+    String getSourceName();
 }

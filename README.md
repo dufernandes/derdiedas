@@ -38,7 +38,7 @@ Please run all commands below from the root of the project.
 In order to run unit and integration tests, execute the following command:
 
 ```
-mvn verify
+mvn clean verify package
 ```
 
 Should you wish only to run the unit tests, execute the following command:

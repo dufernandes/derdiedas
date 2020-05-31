@@ -1,44 +1,39 @@
 package com.derdiedas.bootstrap.importer;
 
 import com.derdiedas.service.WordService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Scanner;
 
 @Slf4j
 @Service
 @Transactional
-public class ImporterFromFirstList extends ImporterFirstTxtPattern {
+public class ImporterFromSecondList extends ImporterFirstTxtPattern {
 
     private static final String TRANSLATION_WORD_SEPARATOR = " – ";
-    private static final String TRANSLATION_SEPARATOR = ". ";
+    private static final String WORD_WORD_IN_PLURAL_SEPARATOR = " ~ ";
+    private static final String TRANSLATION_WORD_NUMBER_SEPARATOR = ". ";
     private static final String ARTICLE_WORD_SEPARATOR = " ";
 
-    private static final int TRANSLATION_OUTER_INDEX = 0;
+    private static final int TRANSLATION_INDEX = 0;
     private static final int TRANSLATION_INNER_INDEX = 1;
-    private static final int WORD_OUTER_INDEX = 1;
+    private static final int WORD_INDEX = 1;
+    private static final int WORD_WITHOUT_PLURAL_INDEX = 0;
     private static final int WORD_INNER_INDEX = 1;
     private static final int ARTICLE_INDEX = 0;
 
     private static final int ARTICLE_WORD_PART_SIZE = 2;
 
     @Autowired
-    public ImporterFromFirstList(WordService wordService) {
+    public ImporterFromSecondList(WordService wordService) {
         super(wordService);
     }
 
     @Override
     public String getFilePath() {
-        return "/static/firstTxtPattern/germanWordsFirstList.txt";
+        return "/static/firstTxtPattern/germanWordsSecondList.txt";
     }
 
     @Override
@@ -46,10 +41,11 @@ public class ImporterFromFirstList extends ImporterFirstTxtPattern {
         WordDto wordDto = null;
 
         String[] wordParts = line.split(TRANSLATION_WORD_SEPARATOR);
-        String translation = wordParts[TRANSLATION_OUTER_INDEX]
-                .split(TRANSLATION_SEPARATOR)[TRANSLATION_INNER_INDEX].trim();
+        String translation = wordParts[TRANSLATION_INDEX]
+                .split(TRANSLATION_WORD_NUMBER_SEPARATOR)[TRANSLATION_INNER_INDEX].trim();
 
-        String[] articleWord = wordParts[WORD_OUTER_INDEX].split(ARTICLE_WORD_SEPARATOR);
+        String[] wordPartsWithPlural = wordParts[WORD_INDEX].split(WORD_WORD_IN_PLURAL_SEPARATOR);
+        String[] articleWord = wordPartsWithPlural[WORD_WITHOUT_PLURAL_INDEX].split(ARTICLE_WORD_SEPARATOR);
         // words without article will not be added
         if (articleWord.length == ARTICLE_WORD_PART_SIZE) {
             String article = articleWord[ARTICLE_INDEX].trim().toLowerCase();

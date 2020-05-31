@@ -1,5 +1,6 @@
 package com.derdiedas.bootstrap;
 
+import com.derdiedas.bootstrap.importer.ImportResult;
 import com.derdiedas.bootstrap.importer.WordsImporter;
 import com.derdiedas.service.DefaultSettingsService;
 import com.derdiedas.service.UserService;
@@ -59,19 +60,34 @@ class DataLoaderTest {
         verify(userService, times(NUMBER_OF_USERS)).save(any());
     }
 
-    private class WordsImporterDummy implements WordsImporter {
+    private static class WordsImporterDummy implements WordsImporter {
 
         @Override
-        public void doImport() throws IOException {
+        public ImportResult doImport() {
             log.info("Running import method from WordsImporterDummy");
+            return ImportResult.builder()
+                    .numberOfExistingWordsNotImported(0)
+                    .numberOfFailedWordsToImport(0)
+                    .numberOfSuccessfullyImportedWords(0)
+                    .build();
+        }
+
+        @Override
+        public String getSourceName() {
+            return "WordsImporterDummy";
         }
     }
 
-    private class WordsImporterDummyThrowIoException implements WordsImporter {
+    private static class WordsImporterDummyThrowIoException implements WordsImporter {
 
         @Override
-        public void doImport() throws IOException {
+        public ImportResult doImport() throws IOException {
             throw new IOException("Exception thrown while calling import from WordsImporterDummyThrowIoException");
+        }
+
+        @Override
+        public String getSourceName() {
+            return "WordsImporterDummyThrowIoException";
         }
     }
 }

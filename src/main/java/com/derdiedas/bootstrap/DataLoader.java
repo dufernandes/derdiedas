@@ -1,5 +1,6 @@
 package com.derdiedas.bootstrap;
 
+import com.derdiedas.bootstrap.importer.ImportResult;
 import com.derdiedas.bootstrap.importer.WordsImporter;
 import com.derdiedas.model.User;
 import com.derdiedas.service.DefaultSettingsService;
@@ -58,9 +59,20 @@ public class DataLoader {
     private void createWords() {
         log.info("Starting words creation...");
 
+        log.info("Number words importing sources: {}", wordsImporters.size());
+        wordsImporters.forEach(wordImporter -> {
+            log.info("Words importing source name: {}", wordImporter.getSourceName());
+        });
+
         wordsImporters.forEach(wordImporter -> {
             try {
-                wordImporter.doImport();
+                ImportResult result = wordImporter.doImport();
+                log.info("{} words, successfully imported.\n " +
+                                "{} words failed to be imported.\n " +
+                                "{} repeated words not imported.\n",
+                        result.getNumberOfSuccessfullyImportedWords(),
+                        result.getNumberOfFailedWordsToImport(),
+                        result.getNumberOfExistingWordsNotImported());
             } catch (IOException ioe) {
                 log.error("Problems creating words", ioe);
             }
