@@ -48,7 +48,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors()
         .and()
-        // allow frames to be displayed as long as the source comes from the same origin
+        // allow frames to be displayed as long as the source comes from the same origin - needed for javadoc deployment in docs/apidocs
         .headers().frameOptions().sameOrigin()
         .and().csrf().disable().authorizeRequests()
         .antMatchers(HttpMethod.POST, SIGN_UP_URL_PATTERN).permitAll()
