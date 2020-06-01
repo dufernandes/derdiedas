@@ -308,6 +308,27 @@
                             </resources>
                         </configuration>
                     </execution>
+
+                    <!-- copy javadoc documentation to jar so it is available in /docs/apidocs/index.html -->
+                    <execution>
+                        <id>copy-resources-javadocs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.outputDirectory}/static/docs/apidocs
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        ${project.build.directory}/site/apidocs
+                                    </directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
