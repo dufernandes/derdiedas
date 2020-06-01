@@ -284,7 +284,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <!-- copy resources to a static directory which will be made available on the generate jar file -->
+                <!-- copy resources to a static directory which will be made available on the generated jar file -->
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
                 <executions>
