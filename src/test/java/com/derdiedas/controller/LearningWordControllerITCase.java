@@ -33,6 +33,6 @@ class LearningWordControllerITCase extends BaseITCase {
         LearningWord schoolLearningWord = school.createLearningWord(false);
         learningWordRepository.save(schoolLearningWord);
 
-        studyWord(schoolLearningWord.getId());
+        studyWord(schoolLearningWord.getId(), "learning-words/set-status");
     }
 }

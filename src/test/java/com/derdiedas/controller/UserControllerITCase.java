@@ -51,29 +51,29 @@ class UserControllerITCase extends BaseITCase {
 
     @WithMockUser("email@email.com")
     @Test
-    void findUserByEmail_validEmail_returnUserDto() throws Exception {
-        createUser("email@email.com0", "password", "first name0", "last name0");
-        createUser("email@email.com1", "password", "first name1", "last name1");
-        findUserByEmail("email@email.com0");
+    void findUserByEmail_whenUsingValidEmail_thenReturnUserDto() throws Exception {
+        createUser("email@email.com0", "password", "first name0", "last name0", "users/create-user");
+        createUser("email@email.com1", "password", "first name1", "last name1", "users/create-user");
+    findUserByEmail("email@email.com0", "users/get-user-by-email");
     }
 
     @WithMockUser("email@email.com")
     @Test
-    void findUserById_validId_returnUserDto() throws Exception {
-        UserDto userDto = createUser("emailxx@email.com0", "passwordxx", "first namexx", "last namexx");
-        findUserById(userDto.getId());
+    void findUserById_whenUsingValidId_thenReturnUserDto() throws Exception {
+        UserDto userDto = createUser("emailxx@email.com0", "passwordxx", "first namexx", "last namexx", "users/create-user");
+        findUserById(userDto.getId(), "users/get-user-by-id");
     }
 
     @WithMockUser("email@email.com")
     @Test
-    void assignLearningWordsToUser_fetchAssignFirstWords_userAssignedWords() throws Exception {
+    void assignLearningWordsToUser_whenFetchingAssignedFirstWords_thenUserIsAssignedWords() throws Exception {
         learningWordRepository.deleteAll();
         wordRepository.deleteAll();
         importer.doImport();
 
-        UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+        UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, "users/create-user");
         Long userId = userDto.getId();
 
-        assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER);
+        assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER, "users/assign-learning-words");
     }
 }

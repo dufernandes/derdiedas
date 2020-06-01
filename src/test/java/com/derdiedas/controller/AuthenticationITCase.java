@@ -14,13 +14,13 @@ class AuthenticationITCase extends BaseITCase {
 
     @Test
     void authenticateUser_validCredentials_userAuthenticatedSuccessfully() throws Exception {
-        createUser("email@email.com", "password", "first name", "last name");
+        createUser("email@email.com", "password", "first name", "last name", "users/create-user");
         authenticateUser();
     }
 
     @Test
     void authenticateUser_invalidCredentials_userAuthenticatedUnsuccessfully() throws Exception {
-        createUser("email@email.com", "password", "first name", "last name");
+        createUser("email@email.com", "password", "first name", "last name", "users/create-user");
         authenticateUserWithWrongCredentials();
     }
 

@@ -39,14 +39,14 @@ class EndToEndITCase extends BaseITCase {
     void createWords_createUsers_userLearnWords_assignLearningWordsToUsers() throws Exception {
         importer.doImport();
 
-        UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+        UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, "users/create-user");
         Long userId = userDto.getId();
 
-        userDto = assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER);
+        userDto = assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER, "users/assign-learning-words");
         for (LearningWordDto w : userDto.getWordsStudying()) {
-            studyWord(w.getId());
+            studyWord(w.getId(), "learning-words/set-status");
         }
 
-        assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN);
+        assignWordsToUser(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN, "users/assign-learning-words");
     }
 }
