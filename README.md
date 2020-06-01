@@ -199,6 +199,7 @@ Here one may find many references which were quite useful for creating this proj
  - Implementing JWT Authentication on Spring Boot APIs - https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
  - Allow H2-Console with Spring Authentication - https://www.logicbig.com/tutorials/spring-framework/spring-boot/jdbc-security-with-h2-console.html
  - Spring Security for Spring Boot Integration Tests - https://www.baeldung.com/spring-security-integration-tests
+ - How to disable 'X-Frame-Options' response header in Spring Security? - https://stackoverflow.com/questions/28647136/how-to-disable-x-frame-options-response-header-in-spring-security
  
 ### References for Spring Rest Documentation
 
