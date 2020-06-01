@@ -125,6 +125,8 @@ curl -i -H "Content-Type: application/json" \
 
 After running the command above, note that the body of the HTTP Response will contain the user data, except the password.
 
+For accessing the full API documentation, please go to the [Generating and accessing REST API documentation](#Generating-and-accessing-rest-api-documentation) section.
+
 ## Test coverage
 
 After running  `mvn clean verify package` one can access the coverate report at the following file: `/derdiedas/target/site/jacoco/index.html`.
