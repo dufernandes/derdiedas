@@ -15,7 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING;
+import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static com.derdiedas.authentication.SecurityConstants.TOKEN_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -60,10 +60,10 @@ class JWTAuthenticationFilterTest extends JwtAuthenticationBase {
         String token = JwtUtils.createJWTToken(principal);
 
         HttpServletResponse response = mock(HttpServletResponse.class);
-        doNothing().when(response).addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        doNothing().when(response).addHeader(HEADER_STRING_AUTHORIZATION, TOKEN_PREFIX + token);
 
         filter.successfulAuthentication(null, response, null, authentication);
-        verify(response).addHeader(HEADER_STRING, TOKEN_PREFIX + JwtUtils.createJWTToken(principal));
+        verify(response).addHeader(HEADER_STRING_AUTHORIZATION, TOKEN_PREFIX + JwtUtils.createJWTToken(principal));
     }
 
     private ServletInputStream createCredentialsIputStream() {

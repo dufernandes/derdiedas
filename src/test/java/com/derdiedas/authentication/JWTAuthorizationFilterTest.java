@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 
-import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING;
+import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static com.derdiedas.authentication.SecurityConstants.TOKEN_PREFIX;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,7 +38,7 @@ class JWTAuthorizationFilterTest extends JwtAuthenticationBase {
         doNothing().when(filterChain).doFilter(any(), any());
 
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getHeader(HEADER_STRING)).thenReturn(TOKEN_PREFIX + " abc");
+        when(request.getHeader(HEADER_STRING_AUTHORIZATION)).thenReturn(TOKEN_PREFIX + " abc");
 
         UsernamePasswordAuthenticationToken authenticationToken = mock(UsernamePasswordAuthenticationToken.class);
 
@@ -59,9 +59,10 @@ class JWTAuthorizationFilterTest extends JwtAuthenticationBase {
         User user = User.builder().email("email@email.com").build();
 
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getHeader(HEADER_STRING)).thenReturn(TOKEN_PREFIX + JwtUtils.createJWTToken(user));
+        when(request.getHeader(HEADER_STRING_AUTHORIZATION)).thenReturn(TOKEN_PREFIX + JwtUtils.createJWTToken(user));
 
-        String userTokenString = JwtUtils.extractUserPrincipalFromJwtToken(request.getHeader(HEADER_STRING));
+        String userTokenString = JwtUtils.extractUserPrincipalFromJwtToken(request.getHeader(
+            HEADER_STRING_AUTHORIZATION));
 
         UsernamePasswordAuthenticationToken userToken = filter.getAuthentication(request);
         assertNotNull(userToken);

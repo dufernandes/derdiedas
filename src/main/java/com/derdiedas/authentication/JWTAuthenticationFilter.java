@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING;
+import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static com.derdiedas.authentication.SecurityConstants.TOKEN_PREFIX;
 
 @Slf4j
@@ -57,7 +57,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication auth) {
 
         String token = JwtUtils.createJWTToken((User) auth.getPrincipal());
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        res.addHeader(HEADER_STRING_AUTHORIZATION, TOKEN_PREFIX + token);
     }
 
 }

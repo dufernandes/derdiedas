@@ -1,5 +1,6 @@
 package com.derdiedas.controller;
 
+import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static com.derdiedas.controller.QueryStringConstants.ACTION_ASSIGN_LEARNING_WORDS;
 import static com.derdiedas.controller.QueryStringConstants.FETCH_TYPE_EMAIL;
 import static com.derdiedas.controller.QueryStringConstants.FETCH_TYPE_ID;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.derdiedas.authentication.Credentials;
 import com.derdiedas.dto.LearningWordDto;
 import com.derdiedas.dto.UserDto;
 import com.derdiedas.repository.LearningWordRepository;
@@ -31,6 +33,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -67,15 +70,40 @@ public class BaseITCase {
                     RestDocumentationContextProvider restDocumentation) {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
         .apply(springSecurity()) // enables security for testing
-        .apply(documentationConfiguration(restDocumentation)).build();
+        .apply(documentationConfiguration(restDocumentation))
+        .build();
     userRepository.deleteAll();
     learningWordRepository.deleteAll();
     wordRepository.deleteAll();
   }
 
-  protected void studyWord(long learningWordId, String apiDocsId) throws Exception {
+  protected String authenticateUser(String userName, String password) throws Exception {
+
+    Credentials credentials = new Credentials();
+    credentials.setUsername(userName);
+    credentials.setPassword(password);
+    ObjectMapper jsonTransformer = new ObjectMapper();
+    String requestBodyAsJsonString = jsonTransformer.writeValueAsString(credentials);
+
+    MvcResult mvcResult = this.mockMvc
+        .perform(post("/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBodyAsJsonString))
+        .andDo(print()).andExpect(status().isOk())
+        .andDo(document(SpringRestDocs.LoginPage.LOGIN_SUCCESSFUL,
+            preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
+        .andReturn();
+
+    return mvcResult.getResponse().getHeader(HEADER_STRING_AUTHORIZATION);
+  }
+
+  protected void studyWord(long learningWordId, String apiDocsId, String authenticationKey) throws Exception {
+
+    HttpHeaders httpHeaders = addAuthTokenToHttpHeaders(authenticationKey);
+
     ResultActions resultActions = this.mockMvc
         .perform(put("/learningWords/" + learningWordId)
+            .headers(httpHeaders)
             .param("isStudied", Boolean.TRUE.toString())
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print()).andExpect(status().isOk());
@@ -90,7 +118,15 @@ public class BaseITCase {
   }
 
   protected void studyWord(long learningWordId) throws Exception {
-    studyWord(learningWordId, null);
+    studyWord(learningWordId, null, null);
+  }
+
+  protected void studyWord(long learningWordId, String apiDocsId) throws Exception {
+    studyWord(learningWordId, apiDocsId, null);
+  }
+
+  protected void studyWordWithAuthKey(long learningWordId, String authenticationKey) throws Exception {
+    studyWord(learningWordId, null, authenticationKey);
   }
 
   protected UserDto createUser(String email, String password, String firstName, String lastName, String apiDocsId)
@@ -150,10 +186,14 @@ public class BaseITCase {
   }
 
   protected UserDto assignWordsToUser(Long userId, String email, String firstName, String lastName, String firstArticle,
-                                      String firstWord, String lastArticle, String lastWord, String apiDocsId)
+                                      String firstWord, String lastArticle, String lastWord, String apiDocsId, String authenticationKey)
       throws Exception {
+
+    HttpHeaders httpHeaders = addAuthTokenToHttpHeaders(authenticationKey);
+
     ResultActions resultActions = this.mockMvc
         .perform(put("/users/" + userId)
+            .headers(httpHeaders)
             .param("action", ACTION_ASSIGN_LEARNING_WORDS)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print()).andExpect(status().isOk());
@@ -182,8 +222,18 @@ public class BaseITCase {
   }
 
   protected UserDto assignWordsToUser(Long userId, String email, String firstName, String lastName, String firstArticle,
+                                      String firstWord, String lastArticle, String lastWord, String apiDocsId) throws Exception {
+    return assignWordsToUser(userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, apiDocsId, null);
+  }
+
+  protected UserDto assignWordsToUser(Long userId, String email, String firstName, String lastName, String firstArticle,
                                       String firstWord, String lastArticle, String lastWord) throws Exception {
-    return assignWordsToUser(userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, null);
+    return assignWordsToUser(userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, null, null);
+  }
+
+  protected UserDto assignWordsToUserWithAuthKey(Long userId, String email, String firstName, String lastName, String firstArticle,
+                                      String firstWord, String lastArticle, String lastWord, String authenticationKey) throws Exception {
+    return assignWordsToUser(userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, null, authenticationKey);
   }
 
   private MvcResult appendApiDocsIfNecessaryAndReturnMvcResult(String apiDocsId, ResultActions resultActions)
@@ -197,5 +247,13 @@ public class BaseITCase {
 
   private boolean wordMatches(LearningWordDto lw, String article, String word) {
     return article.equals(lw.getWord().getArticle()) && word.equals(lw.getWord().getWord());
+  }
+
+  private HttpHeaders addAuthTokenToHttpHeaders(String authenticationKey) {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    if (isNotEmpty(authenticationKey)) {
+      httpHeaders.add(HEADER_STRING_AUTHORIZATION, authenticationKey);
+    }
+    return httpHeaders;
   }
 }
