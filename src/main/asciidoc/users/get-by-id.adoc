@@ -1,4 +1,4 @@
-[[user-get-by-id]]
+[[users-get-by-id]]
 
 === Find user by id
 

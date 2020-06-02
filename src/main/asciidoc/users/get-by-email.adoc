@@ -1,4 +1,4 @@
-[[user-get-by-email]]
+[[users-get-by-email]]
 
 === Find user by email
 

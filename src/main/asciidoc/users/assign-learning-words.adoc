@@ -1,4 +1,4 @@
-[[user-assign-learning-words]]
+[[users-assign-learning-words]]
 
 === Assign learning words to a user
 

@@ -1,4 +1,4 @@
-[[user-create]]
+[[users-create]]
 
 === User creation
 

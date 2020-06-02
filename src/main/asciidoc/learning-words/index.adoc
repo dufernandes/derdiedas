@@ -1,4 +1,4 @@
-[[learning-words]]
+[[learning-words-index]]
 
 == Learning Words API
 

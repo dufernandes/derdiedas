@@ -34,7 +34,8 @@ class EndToEndITCase extends BaseITCase {
   private LearningWordRepository learningWordRepository;
 
   @Test
-  void createWords_createUsers_authenticateUser_userLearnWords_assignLearningWordsToUsers() throws Exception {
+  void createWords_createUsers_authenticateUser_userLearnWords_assignLearningWordsToUsers_verificationMadeForWordsAndArticles()
+      throws Exception {
     importer.doImport();
 
     UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);

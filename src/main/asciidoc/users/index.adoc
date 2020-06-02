@@ -1,4 +1,4 @@
-[[user]]
+[[users-index]]
 
 == Users API
 
