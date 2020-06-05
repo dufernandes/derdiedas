@@ -1,4 +1,4 @@
-# Der Die Das
+# Der Die Das REST API
 
 This is a software for helping memorizing the German articles along with their respective words.
 
