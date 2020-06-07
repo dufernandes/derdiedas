@@ -189,20 +189,7 @@ public class BaseITCase {
                                       String firstWord, String lastArticle, String lastWord, String apiDocsId, String authenticationKey)
       throws Exception {
 
-    HttpHeaders httpHeaders = addAuthTokenToHttpHeaders(authenticationKey);
-
-    ResultActions resultActions = this.mockMvc
-        .perform(put("/users/" + userId)
-            .headers(httpHeaders)
-            .param("action", ACTION_ASSIGN_LEARNING_WORDS)
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print()).andExpect(status().isOk());
-
-    MvcResult mvcResult = appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
-
-    String contentAsString = mvcResult.getResponse().getContentAsString();
-
-    UserDto result = objectMapper.readValue(contentAsString, UserDto.class);
+    UserDto result = assignWordsToUser(userId, apiDocsId, authenticationKey);
 
     assertNotNull(result);
     assertEquals(userId, result.getId());
@@ -219,6 +206,27 @@ public class BaseITCase {
         .anyMatch(lw -> wordMatches(lw, lastArticle, lastWord)));
 
     return result;
+  }
+
+  protected UserDto assignWordsToUser(Long userId, String apiDocsId, String authenticationKey) throws Exception {
+    HttpHeaders httpHeaders = addAuthTokenToHttpHeaders(authenticationKey);
+
+    ResultActions resultActions = this.mockMvc
+        .perform(put("/users/" + userId)
+            .headers(httpHeaders)
+            .param("action", ACTION_ASSIGN_LEARNING_WORDS)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print()).andExpect(status().isOk());
+
+    MvcResult mvcResult = appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+
+    String contentAsString = mvcResult.getResponse().getContentAsString();
+
+    return objectMapper.readValue(contentAsString, UserDto.class);
+  }
+
+  protected UserDto assignWordsToUser(Long userId, String authenticationKey) throws Exception {
+    return assignWordsToUser(userId, null, authenticationKey);
   }
 
   protected UserDto assignWordsToUser(Long userId, String email, String firstName, String lastName, String firstArticle,

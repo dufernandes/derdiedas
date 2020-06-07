@@ -1,5 +1,8 @@
 package com.derdiedas.controller;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import com.derdiedas.bootstrap.importer.ImporterFromFirstList;
 import com.derdiedas.dto.LearningWordDto;
 import com.derdiedas.dto.UserDto;
@@ -49,5 +52,28 @@ class EndToEndITCase extends BaseITCase {
     }
 
     assignWordsToUserWithAuthKey(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN, authenticationKey);
+  }
+
+  @Test
+  void userLearnAllWords()
+      throws Exception {
+    importer.doImport();
+
+    UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    String authenticationKey = authenticateUser(EMAIL, PASSWORD);
+    Long userId = userDto.getId();
+
+    userDto =
+        assignWordsToUser(userId, authenticationKey);
+    int studyPage = userDto.getStudyGroupPage();
+    while (isNotEmpty(userDto.getWordsStudying())) {
+      for (LearningWordDto w : userDto.getWordsStudying()) {
+        studyWordWithAuthKey(w.getId(), authenticationKey);
+      }
+
+      userDto = assignWordsToUser(userId, authenticationKey);
+      assertNotEquals(studyPage, userDto.getStudyGroupPage());
+      studyPage = userDto.getStudyGroupPage();
+    }
   }
 }

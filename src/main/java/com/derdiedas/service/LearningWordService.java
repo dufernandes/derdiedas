@@ -49,7 +49,7 @@ public class LearningWordService {
      *
      * @param userEmail User email
      * @return List of {@link LearningWord} entities from a certain user
-     * @throws IllegalArgumentException Exception thrown in in case on user is found by the
+     * @throws IllegalArgumentException Exception thrown in in case no user is found by the
      *                                  given email
      */
     public Set<LearningWord> findUserCurrentLearningWords(String userEmail) {

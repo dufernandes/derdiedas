@@ -93,7 +93,7 @@ public class UserService implements UserDetailsService {
             user = assignLearningWordsToUser(user);
 
         } else {
-            throw new IllegalStateException("User words status are in an unpredictable state. Please contact support");
+            throw new IllegalStateException("User words status are in an unpredictable state.");
         }
 
         return user;
