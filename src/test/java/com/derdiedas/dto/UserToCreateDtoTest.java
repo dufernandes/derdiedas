@@ -14,7 +14,7 @@ class UserToCreateDtoTest {
     private static final String LAST_NAME = "last name";
 
     @Test
-    void toUser_validParameter_returnEntity() {
+    void toUser_whenParameterIsValid_thenReturnEntity() {
         UserToCreateDto dto = UserToCreateDto.builder()
                 .email(EMAIL)
                 .password(PASSWORD)
@@ -30,7 +30,7 @@ class UserToCreateDtoTest {
     }
 
     @Test
-    void toUser_nullParameter_returnNull() {
+    void toUser_whenParameterIsNull_thenReturnNull() {
         assertNull(UserToCreateDto.toUser(null));
     }
 }

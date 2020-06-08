@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WordDtoTest {
 
     @Test
-    void buildFromWord_validWord_returnDto() {
+    void buildFromWord_whenWordIsValid_thenReturnDto() {
         Word man = WordUtil.createWordMan();
 
         WordDto manDto = WordDto.buildFromWord(man);
@@ -23,12 +23,12 @@ class WordDtoTest {
     }
 
     @Test
-    void buildFromWord_nullParameter_returnNull() {
+    void buildFromWord_whenParameterIsNull_thenReturnNull() {
         assertNull(WordDto.buildFromWord(null));
     }
 
     @Test
-    void buildFromWordSet_validSet_returnSetDto() {
+    void buildFromWordSet_whenSetIsValid_thenReturnSetDto() {
         Word man = WordUtil.createWordMan();
         Word school = WordUtil.createWordSchool();
 

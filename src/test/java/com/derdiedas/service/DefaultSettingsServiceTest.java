@@ -27,7 +27,7 @@ class DefaultSettingsServiceTest {
     }
 
     @Test
-    void createDefaultSettings_validSettings_returnCreatedDefaultSettings() {
+    void createDefaultSettings_whenSettingsValuesAreValid_thenReturnCreatedDefaultSettings() {
         int numberOfWords = 3;
         DefaultSettings settings = createDefaultSettings(numberOfWords);
         when(defaultSettingsRepository.save(settings)).thenReturn(settings);

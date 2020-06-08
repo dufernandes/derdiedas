@@ -30,7 +30,7 @@ class UserRepositoryITCase {
     private UserRepository userRepository;
 
     @Test
-    void findByLogin_validLogin_returnUser() {
+    void findByLogin_whenLoginIsValid_thenReturnUser() {
         User user = new User();
         user.setEmail(EMAIL);
         user.setFirstName(FIRST_NAME);
@@ -47,7 +47,7 @@ class UserRepositoryITCase {
     }
 
     @Test
-    void findAll_10UsersPageBy5_return5Users() {
+    void findAll_whenExist10UsersPageBy5_thenReturn5Users() {
         List<User> users = new ArrayList<>();
         for (int index = 0; index < 10; index++) {
             User user = new User();

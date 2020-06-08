@@ -33,7 +33,7 @@ class JWTAuthorizationFilterTest extends JwtAuthenticationBase {
     }
 
     @Test
-    void doFilterInternal_validParameters_noExceptionsThrown() throws IOException, ServletException {
+    void doFilterInternal_whenParametersAreValid_thenNoExceptionsIsThrown() throws IOException, ServletException {
         FilterChain filterChain = mock(FilterChain.class);
         doNothing().when(filterChain).doFilter(any(), any());
 
@@ -55,7 +55,7 @@ class JWTAuthorizationFilterTest extends JwtAuthenticationBase {
     }
 
     @Test
-    void getAuthentication_validParameters_returnToken() {
+    void getAuthentication_whenParametersAreValid_thenReturnToken() {
         User user = User.builder().email("email@email.com").build();
 
         HttpServletRequest request = mock(HttpServletRequest.class);

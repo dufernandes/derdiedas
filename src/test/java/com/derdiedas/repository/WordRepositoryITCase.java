@@ -52,7 +52,7 @@ class WordRepositoryITCase {
     }
 
     @Test
-    void findAll_2Words_returnPagedResult() {
+    void findAll_whenExists2Words_thenReturnPagedResult() {
         Page<Word> wordsPage = wordRepository.findAll(PageRequest.of(0, 5));
         List<Word> words = wordsPage.getContent();
         assertNotNull(words);
@@ -66,7 +66,7 @@ class WordRepositoryITCase {
     }
 
     @Test
-    void findAll_maxPageExceeded_returnEmptyPageResult() {
+    void findAll_whenMaxPageIsExceeded_thenReturnEmptyPageResult() {
         Page<Word> wordsPage = wordRepository.findAll(PageRequest.of(1, 5));
         List<Word> words = wordsPage.getContent();
         assertNotNull(words);
@@ -81,18 +81,18 @@ class WordRepositoryITCase {
 
 
     @Test
-    void findByArticleAndGermanWord_validWord_returnWordObject() {
+    void findByArticleAndGermanWord_whenWordIsValid_thenReturnWordObject() {
         assertTrue(wordRepository.findByArticleAndWord(DER, MANN).isPresent());
         assertTrue(wordRepository.findByArticleAndWord(DIE, ZEIT).isPresent());
     }
 
     @Test
-    void findByArticleAndGermanWord_notSavedWord_returnEmptyOptional() {
+    void findByArticleAndGermanWord_whenNoSavedWordExists_thenReturnEmptyOptional() {
         assertFalse(wordRepository.findByArticleAndWord(DIE, HAND).isPresent());
     }
 
     @Test
-    void save_missingWordAttributes_throwException() {
+    void save_whenDataHasMissingWordAttributes_thenThrowException() {
         assertThrows(PersistenceException.class, () -> {
             entityManager.persistAndFlush(Word.builder().article(DIE).word(MANN).build());
         });

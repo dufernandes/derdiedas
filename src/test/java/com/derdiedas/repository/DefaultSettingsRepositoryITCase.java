@@ -24,7 +24,7 @@ class DefaultSettingsRepositoryITCase {
     }
 
     @Test
-    void findDefault_validValues_returnDefaultSettings() {
+    void findDefault_whenValusAreValid_thenReturnDefaultSettings() {
         DefaultSettings defaultSettings = defaultSettingsRepository.findDefault();
         assertNotNull(defaultSettings);
         assertEquals(DEFAULT_NAME, defaultSettings.getName());

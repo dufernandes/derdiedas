@@ -31,7 +31,7 @@ class WordServiceTest {
     }
 
     @Test
-    void createWord_parametersForNewWord_returnCreatedWord() {
+    void createWord_whenEnteredParametersForNewWord_thenReturnCreatedWord() {
         Word theMan = Word.builder().article(DER).word(MANN).translation(THE_MAN).build();
 
         when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.empty());
@@ -46,7 +46,7 @@ class WordServiceTest {
     }
 
     @Test
-    void createWord_parametersWithExistingWord_ExceptionThrown() {
+    void createWord_whenEnterParametersWithExistingWord_thenExceptionThrown() {
         Word theMan = Word.builder().article(DER).word(MANN).translation(THE_MAN).build();
 
         when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.of(theMan));
@@ -61,7 +61,7 @@ class WordServiceTest {
     }
 
     @Test
-    void wordExists_wordExists_returnTrue() {
+    void wordExists_whenWordExists_thenReturnTrue() {
         Word theMan = Word.builder().article(DER).word(MANN).translation(THE_MAN).build();
         when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.of(theMan));
 
@@ -69,7 +69,7 @@ class WordServiceTest {
     }
 
     @Test
-    void wordExists_wordDoesNotExist_returnFalse() {
+    void wordExists_whenWordDoesNotExist_thenReturnFalse() {
         when(wordRepository.findByArticleAndWord(DER, MANN)).thenReturn(Optional.empty());
         assertFalse(wordService.wordExists(DER, MANN));
     }

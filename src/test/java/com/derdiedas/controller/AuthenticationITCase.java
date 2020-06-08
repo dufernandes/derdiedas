@@ -27,7 +27,7 @@ class AuthenticationITCase extends BaseITCase {
   }
 
   @Test
-  void fetchUsers_whenUserIsNootLoggedIn_ThenReturnForbidden() throws Exception {
+  void fetchUsers_whenUserIsNotLoggedIn_ThenReturnForbidden() throws Exception {
     this.mockMvc
         .perform(get("/users").param("email", "email@email.com0"))
         .andDo(print())

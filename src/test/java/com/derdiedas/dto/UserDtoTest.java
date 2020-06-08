@@ -21,7 +21,7 @@ class UserDtoTest {
     private static final int GROUP_PAGE = 2;
 
     @Test
-    void buildFromUser_validUser_returnUserDto() {
+    void buildFromUser_whenUserIsValid_thenReturnUserDto() {
         User user = createUserDto();
 
         UserDto dto = UserDto.buildFromUser(user);
@@ -29,12 +29,12 @@ class UserDtoTest {
     }
 
     @Test
-    void buildFromUser_nullUser_returnNullUserDto() {
+    void buildFromUser_whenUserIsNull_thenReturnNullUserDto() {
         assertNull(UserDto.buildFromUser(null));
     }
 
     @Test
-    void buildListFromUsers_validUsers_returnListDto() {
+    void buildListFromUsers_whenUsersAreValid_thenReturnListDto() {
         User user1 = createUserDto();
         User user2 = createUserDto();
         List<User> users = new ArrayList<>();
@@ -49,7 +49,7 @@ class UserDtoTest {
     }
 
     @Test
-    void buildListFromUsers_nullUsers_returnEmptyListDto() {
+    void buildListFromUsers_whenUsersAreNull_thenReturnEmptyListDto() {
         List<UserDto> dtos = UserDto.buildListFromUsers(null);
         assertNotNull(dtos);
         assertEquals(0, dtos.size());

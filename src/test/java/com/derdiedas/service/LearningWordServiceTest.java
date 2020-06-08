@@ -39,7 +39,7 @@ class LearningWordServiceTest {
     }
 
     @Test
-    void setLearningWordLearnedStatus_validId_returnUpdatedEntity() {
+    void setLearningWordLearnedStatus_whenIdIsValid_thenReturnUpdatedEntity() {
         LearningWord school = WordUtil.createLearningWordSchool();
         school.setId(LEARNING_WORD_ID);
         LearningWord schoolLearned = WordUtil.createLearningWordSchool();
@@ -57,7 +57,7 @@ class LearningWordServiceTest {
     }
 
     @Test
-    void setLearningWordLearnedStatus_invalidId_throwException() {
+    void setLearningWordLearnedStatus_whenIdIsInvalid_thenThrowException() {
         when(learningWordRepository.findById(LEARNING_WORD_ID)).thenReturn(Optional.empty());
         when(learningWordRepository.save(any())).thenReturn(null);
 
@@ -70,7 +70,7 @@ class LearningWordServiceTest {
     }
 
     @Test
-    void findUserCurrentLearningWords_validEmail_returnLearningWords() {
+    void findUserCurrentLearningWords_whenEmailIsValid_thenReturnLearningWords() {
         LearningWord school = WordUtil.createLearningWordSchool();
         User user = UserUtil.createUser();
 
@@ -84,7 +84,7 @@ class LearningWordServiceTest {
     }
 
     @Test
-    void findUserCurrentLearningWords_invalidEmail_throwException() {
+    void findUserCurrentLearningWords_emailIsInvalid_thenThrowException() {
         when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> {

@@ -35,7 +35,7 @@ class JWTAuthenticationFilterTest extends JwtAuthenticationBase {
     }
 
     @Test
-    void attemptAuthentication_validAuthenticationParameters_returnValidAuthentication() throws IOException {
+    void attemptAuthentication_whenAuthenticationParametersAreValid_thenReturnValidAuthentication() throws IOException {
 
         ServletInputStream credentialsInputStream = createCredentialsIputStream();
 
@@ -50,7 +50,7 @@ class JWTAuthenticationFilterTest extends JwtAuthenticationBase {
     }
 
     @Test
-    void successfulAuthentication_validParameters_successfulTokenCreation() {
+    void successfulAuthentication_whenParametersAreValid_thenSuccessfulTokenisCreated() {
         User principal = mock(User.class);
         when(principal.getUsername()).thenReturn(USER_NAME);
 

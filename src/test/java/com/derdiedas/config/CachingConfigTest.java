@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CachingConfigTest {
 
     @Test
-    void cacheManager_noParameters_correctCacheElements() {
+    void cacheManager_whenNoParametersAreProvided_thenCorrectElementsAreCached() {
         CachingConfig cachingConfig = new CachingConfig();
         CacheManager cacheManager = cachingConfig.cacheManager();
         assertNotNull(cacheManager);

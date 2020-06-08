@@ -9,25 +9,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class JwtUtilsTest {
 
     @Test
-    void createJWTToken_validUser_returnToken() {
+    void createJWTToken_whenUserIsValid_thenReturnToken() {
         User user = User.builder().email("email@email.com").build();
         String result = JwtUtils.createJWTToken(user);
         assertNotNull(result);
     }
 
     @Test
-    void createJWTToken_nullUser_returnNull() {
+    void createJWTToken_whenUserIsNull_thenReturnNull() {
         assertNull(JwtUtils.createJWTToken(null));
     }
 
     @Test
-    void createJWTToken_nullEmail_returnNull() {
+    void createJWTToken_whenEmailIsNull_thenReturnNull() {
         assertNull(JwtUtils.
                 createJWTToken(User.builder().email(null).build()));
     }
 
     @Test
-    void extractUserFromJwtToken_validToken_returnUserPrincipal() {
+    void extractUserFromJwtToken_whenTokenIsValid_thenReturnUserPrincipal() {
         User user = User.builder().email("email@email.com").build();
         String token = JwtUtils.createJWTToken(user);
         String result = JwtUtils.extractUserPrincipalFromJwtToken(token);
@@ -36,12 +36,12 @@ class JwtUtilsTest {
     }
 
     @Test
-    void extractUserFromJwtToken_nullToken_returnNull() {
+    void extractUserFromJwtToken_whenTokenIsNull_thenReturnNull() {
         assertNull(JwtUtils.extractUserPrincipalFromJwtToken(null));
     }
 
     @Test
-    void extractUserFromJwtToken_EmptyToken_returnNull() {
+    void extractUserFromJwtToken_whenTokenIsEmpty_thenReturnNull() {
         assertNull(JwtUtils.extractUserPrincipalFromJwtToken(StringUtils.EMPTY));
     }
 }

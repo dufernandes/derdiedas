@@ -38,14 +38,14 @@ class DataLoaderTest {
     }
 
     @Test
-    void constructorCalled_validData_importDataSuccessfully() {
+    void constructorCalled_whenDataIsValid_thenImportDataOccursSuccessfully() {
         dataLoader = new DataLoader(userService, wordsImporters, defaultSettingsService);
 
         mockAndTestImportingData();
     }
 
     @Test
-    void constructorCalled_wordImporterFailed_importDataSuccessfullyWithoutWords() {
+    void constructorCalled_whenWordImporterFails_thenImportDataRunsSuccessfullyWithoutWords() {
         dataLoader = new DataLoader(userService, Collections
                 .singletonList(new WordsImporterDummyThrowIoException()), defaultSettingsService);
 
