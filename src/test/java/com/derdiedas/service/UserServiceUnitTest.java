@@ -54,7 +54,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void assignLearningWordsToUser_userContainsLearningWords_returnLearningWords() {
+    void assignLearningWordsToUser_whenUserHasAllCurrentWordsToLearn_thenReturnSameLearningWords() {
         Word school = WordUtil.createWordSchool();
         User user = UserUtil.createUser();
 
@@ -75,7 +75,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void assignLearningWordsToUser_userNoLearningWords_returnLearningWords() {
+    void assignLearningWordsToUser_whenNewLearningWordsLeft_thenReturnNoNewLearningWords() {
         User user = UserUtil.createUser();
         user.setLearningWords(new HashSet<>());
 
@@ -95,7 +95,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void assignLearningWordsToUser_userLearnedLearningWords_returnLearningWords() {
+    void assignLearningWordsToUser_whenUserLearnedAllWords_thenReturnNewLearningWords() {
         Word school = WordUtil.createWordSchool();
         User user = UserUtil.createUser();
         user.getLearningWords().iterator().next().setStudied(true);
@@ -118,7 +118,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void assignLearningWordsToUser_invalidEmail_throwException() {
+    void assignLearningWordsToUser_whenEmailIsInvalid_thenThrowException() {
         when(userRepository.findById(USER_ID)).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -129,7 +129,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void createUser_validParameter_returnCreatedUser() {
+    void createUser_whenParameterIsValid_thenReturnCreatedUser() {
         UserToCreateDto userDto = createMockUserToCreateDto();
         User user = UserToCreateDto.toUser(userDto);
         user.setPassword(ENCODED_PASSWORD);
@@ -150,7 +150,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void loadUserByUsername_validUserName_returnUserDetailsObject() {
+    void loadUserByUsername_whenUserNameIsValid_ThenReturnUserDetailsObject() {
         User user = createMockUser();
 
         when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
@@ -162,7 +162,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void save_validParameter_returnSavedParameter() {
+    void save_whenUserParameterIsValid_thenReturnSavedUser() {
         User user = createMockUser();
 
         mockForSave(user);
@@ -173,7 +173,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void findUserByEmail_validLogin_returnUser() {
+    void findUserByEmail_whenLoginIsValid_thenReturnUserMatch() {
 
         User user = mock(User.class);
 
@@ -185,7 +185,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void findUserById_validId_returnUser() {
+    void findUserById_whenIdIsValid_thenReturnUserMatch() {
 
         User user = mock(User.class);
 
@@ -197,7 +197,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    void findAllPaged_pagedValues_returnPagedResults() {
+    void findAllPaged_whenPagedValuesAreValid_thenReturnPagedResults() {
         when(userRepository.findAll(any())).thenReturn(userPage);
 
         List<User> result = userService.findAllPaged(0, 3);
