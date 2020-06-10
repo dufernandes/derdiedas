@@ -1,4 +1,4 @@
-package com.derdiedas.controller.helper;
+package com.derdiedas.controller.utils;
 
 import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HttpHeadersHelper {
+public class HttpHeadersUtils {
 
   public HttpHeaders addAuthTokenToHttpHeaders(String authenticationKey) {
     HttpHeaders httpHeaders = new HttpHeaders();

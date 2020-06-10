@@ -1,4 +1,4 @@
-package com.derdiedas.controller.helper;
+package com.derdiedas.controller.utils;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,24 +17,24 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-public class WordHelper {
+public class WordUtils {
 
-  private final HttpHeadersHelper httpHeadersHelper;
-  private final ApiDocsHelper apiDocsHelper;
+  private final HttpHeadersUtils httpHeadersUtils;
+  private final ApiDocsUtils apiDocsUtils;
   private final ObjectMapper objectMapper;
 
   @Autowired
-  public WordHelper(HttpHeadersHelper httpHeadersHelper,
-                    ApiDocsHelper apiDocsHelper,
-                    ObjectMapper objectMapper) {
-    this.httpHeadersHelper = httpHeadersHelper;
-    this.apiDocsHelper = apiDocsHelper;
+  public WordUtils(HttpHeadersUtils httpHeadersUtils,
+                   ApiDocsUtils apiDocsUtils,
+                   ObjectMapper objectMapper) {
+    this.httpHeadersUtils = httpHeadersUtils;
+    this.apiDocsUtils = apiDocsUtils;
     this.objectMapper = objectMapper;
   }
 
   public void studyWord(MockMvc mockMvc, long learningWordId, String apiDocsId, String authenticationKey) throws Exception {
 
-    HttpHeaders httpHeaders = httpHeadersHelper.addAuthTokenToHttpHeaders(authenticationKey);
+    HttpHeaders httpHeaders = httpHeadersUtils.addAuthTokenToHttpHeaders(authenticationKey);
 
     ResultActions resultActions = mockMvc
         .perform(put("/learningWords/" + learningWordId)
@@ -43,7 +43,7 @@ public class WordHelper {
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print()).andExpect(status().isOk());
 
-    MvcResult mvcResult = apiDocsHelper.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+    MvcResult mvcResult = apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
     LearningWordDto result = objectMapper.readValue(contentAsString, LearningWordDto.class);

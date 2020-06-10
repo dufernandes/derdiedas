@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.derdiedas.controller.helper.UserHelper;
+import com.derdiedas.controller.utils.UserUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,17 +17,17 @@ import org.springframework.http.MediaType;
 class AuthenticationITCase extends BaseITCase {
 
   @Autowired
-  private UserHelper userHelper;
+  private UserUtils userUtils;
 
   @Test
   void authenticateUser_whenCredentialsAreValid_thenUserAuthenticatedIsSuccessfully() throws Exception {
-    userHelper.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
+    userUtils.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUser();
   }
 
   @Test
   void authenticateUser_whenCredentialsAreInvalid_thenUserAuthenticationIsUnsuccessful() throws Exception {
-    userHelper.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
+    userUtils.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUserWithWrongCredentials();
   }
 

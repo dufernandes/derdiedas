@@ -1,4 +1,4 @@
-package com.derdiedas.controller.helper;
+package com.derdiedas.controller.utils;
 
 import static com.derdiedas.authentication.SecurityConstants.HEADER_STRING_AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -18,10 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import lombok.experimental.UtilityClass;
-
 @Component
-public class UserAuthenticationHelper {
+public class UserAuthenticationUtils {
 
   public String authenticateUser(MockMvc mockMvc, String userName, String password) throws Exception {
 

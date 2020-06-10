@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.derdiedas.bootstrap.importer.ImporterFromFirstList;
-import com.derdiedas.controller.helper.UserHelper;
+import com.derdiedas.controller.utils.UserUtils;
 import com.derdiedas.dto.UserDto;
 import com.derdiedas.repository.LearningWordRepository;
 import com.derdiedas.repository.WordRepository;
@@ -41,7 +41,7 @@ class UserControllerITCase extends BaseITCase {
   private LearningWordRepository learningWordRepository;
 
   @Autowired
-  private UserHelper userHelper;
+  private UserUtils userUtils;
 
   @WithMockUser("email@email.com")
   @Test
@@ -56,20 +56,20 @@ class UserControllerITCase extends BaseITCase {
   @WithMockUser("email@email.com")
   @Test
   void findUserByEmail_whenUsingValidEmail_thenReturnUserDto() throws Exception {
-    userHelper
+    userUtils
         .createUser(getMockMvc(), "email@email.com0", "password", "first name0", "last name0", "users/create-user");
-    userHelper
+    userUtils
         .createUser(getMockMvc(), "email@email.com1", "password", "first name1", "last name1", "users/create-user");
-    userHelper.findUserByEmail(getMockMvc(),"email@email.com0", SpringRestDocs.UsersPage.GET_USER_BY_EMAIL);
+    userUtils.findUserByEmail(getMockMvc(),"email@email.com0", SpringRestDocs.UsersPage.GET_USER_BY_EMAIL);
   }
 
   @WithMockUser("email@email.com")
   @Test
   void findUserById_whenUsingValidId_thenReturnUserDto() throws Exception {
     UserDto userDto =
-        userHelper.createUser(getMockMvc(), "emailxx@email.com0", "passwordxx", "first namexx", "last namexx",
+        userUtils.createUser(getMockMvc(), "emailxx@email.com0", "passwordxx", "first namexx", "last namexx",
             "users/create-user");
-    userHelper.findUserById(getMockMvc(), userDto.getId(), SpringRestDocs.UsersPage.GET_USER_BY_ID);
+    userUtils.findUserById(getMockMvc(), userDto.getId(), SpringRestDocs.UsersPage.GET_USER_BY_ID);
   }
 
   @WithMockUser("email@email.com")
@@ -80,11 +80,11 @@ class UserControllerITCase extends BaseITCase {
     importer.doImport();
 
     UserDto userDto =
-        userHelper
+        userUtils
             .createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SpringRestDocs.UsersPage.CREATE_USER);
     Long userId = userDto.getId();
 
-    userHelper.assignWordsToUser(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER,
+    userUtils.assignWordsToUser(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER,
         SpringRestDocs.UsersPage.ASSIGN_LEARNING_WORDS);
   }
 }

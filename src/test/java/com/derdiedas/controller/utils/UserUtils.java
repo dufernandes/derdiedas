@@ -1,4 +1,4 @@
-package com.derdiedas.controller.helper;
+package com.derdiedas.controller.utils;
 
 import static com.derdiedas.controller.QueryStringConstants.ACTION_ASSIGN_LEARNING_WORDS;
 import static com.derdiedas.controller.QueryStringConstants.FETCH_TYPE_EMAIL;
@@ -26,18 +26,18 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-public class UserHelper {
+public class UserUtils {
 
-  private final ApiDocsHelper apiDocsHelper;
-  private final HttpHeadersHelper httpHeadersHelper;
+  private final ApiDocsUtils apiDocsUtils;
+  private final HttpHeadersUtils httpHeadersUtils;
   private final ObjectMapper objectMapper;
 
   @Autowired
-  public UserHelper(ApiDocsHelper apiDocsHelper,
-                    HttpHeadersHelper httpHeadersHelper,
-                    ObjectMapper objectMapper) {
-    this.apiDocsHelper = apiDocsHelper;
-    this.httpHeadersHelper = httpHeadersHelper;
+  public UserUtils(ApiDocsUtils apiDocsUtils,
+                   HttpHeadersUtils httpHeadersUtils,
+                   ObjectMapper objectMapper) {
+    this.apiDocsUtils = apiDocsUtils;
+    this.httpHeadersUtils = httpHeadersUtils;
     this.objectMapper = objectMapper;
   }
 
@@ -59,7 +59,7 @@ public class UserHelper {
         .andExpect(jsonPath("$.firstName").value(firstName))
         .andExpect(jsonPath("$.lastName").value(lastName));
 
-    MvcResult mvcResult = apiDocsHelper.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+    MvcResult mvcResult = apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
     return objectMapper.readValue(contentAsString, UserDto.class);
@@ -76,7 +76,7 @@ public class UserHelper {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.email").value(email));
 
-    apiDocsHelper.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+    apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
   }
 
   public void findUserByEmail(MockMvc mockMvc, String email) throws Exception {
@@ -90,7 +90,7 @@ public class UserHelper {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(userId));
 
-    apiDocsHelper.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+    apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
   }
 
   public void findUserById(MockMvc mockMvc, Long userId) throws Exception {
@@ -122,7 +122,7 @@ public class UserHelper {
   }
 
   public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String apiDocsId, String authenticationKey) throws Exception {
-    HttpHeaders httpHeaders = httpHeadersHelper.addAuthTokenToHttpHeaders(authenticationKey);
+    HttpHeaders httpHeaders = httpHeadersUtils.addAuthTokenToHttpHeaders(authenticationKey);
 
     ResultActions resultActions = mockMvc
         .perform(put("/users/" + userId)
@@ -131,7 +131,7 @@ public class UserHelper {
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print()).andExpect(status().isOk());
 
-    MvcResult mvcResult = apiDocsHelper.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+    MvcResult mvcResult = apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
 
     String contentAsString = mvcResult.getResponse().getContentAsString();
 

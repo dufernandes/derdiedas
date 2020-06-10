@@ -4,13 +4,11 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.derdiedas.bootstrap.importer.ImporterFromFirstList;
-import com.derdiedas.controller.helper.UserAuthenticationHelper;
-import com.derdiedas.controller.helper.UserHelper;
-import com.derdiedas.controller.helper.WordHelper;
+import com.derdiedas.controller.utils.UserAuthenticationUtils;
+import com.derdiedas.controller.utils.UserUtils;
+import com.derdiedas.controller.utils.WordUtils;
 import com.derdiedas.dto.LearningWordDto;
 import com.derdiedas.dto.UserDto;
-import com.derdiedas.repository.LearningWordRepository;
-import com.derdiedas.repository.WordRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,36 +33,33 @@ class EndToEndITCase extends BaseITCase {
   private ImporterFromFirstList importer;
 
   @Autowired
-  private WordRepository wordRepository;
+  private UserAuthenticationUtils userAuthenticationUtils;
 
   @Autowired
-  private LearningWordRepository learningWordRepository;
+  private WordUtils wordUtils;
 
   @Autowired
-  private UserAuthenticationHelper userAuthenticationHelper;
-
-  @Autowired
-  private WordHelper wordHelper;
-
-  @Autowired
-  private UserHelper userHelper;
+  private UserUtils userUtils;
 
   @Test
   void createWords_createUsers_authenticateUser_userLearnWords_assignLearningWordsToUsers_verificationMadeForWordsAndArticles()
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userHelper.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
-    String authenticationKey = userAuthenticationHelper.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
+    UserDto userDto = userUtils.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
     userDto =
-        userHelper.assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER, authenticationKey);
+        userUtils
+            .assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER,
+                authenticationKey);
     for (LearningWordDto w : userDto.getWordsStudying()) {
-      wordHelper.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
+      wordUtils.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
     }
 
-    userHelper.assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN, authenticationKey);
+    userUtils.assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN,
+        authenticationKey);
   }
 
   @Disabled(value = "Test takes to long to run, thus it is disabled")
@@ -73,19 +68,19 @@ class EndToEndITCase extends BaseITCase {
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userHelper.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
-    String authenticationKey = userAuthenticationHelper.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
+    UserDto userDto = userUtils.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
     userDto =
-        userHelper.assignWordsToUser(getMockMvc(), userId, authenticationKey);
+        userUtils.assignWordsToUser(getMockMvc(), userId, authenticationKey);
     int studyPage = userDto.getStudyGroupPage();
     while (isNotEmpty(userDto.getWordsStudying())) {
       for (LearningWordDto w : userDto.getWordsStudying()) {
-        wordHelper.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
+        wordUtils.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
       }
 
-      userDto = userHelper.assignWordsToUser(getMockMvc(), userId, authenticationKey);
+      userDto = userUtils.assignWordsToUser(getMockMvc(), userId, authenticationKey);
       assertNotEquals(studyPage, userDto.getStudyGroupPage());
       studyPage = userDto.getStudyGroupPage();
     }

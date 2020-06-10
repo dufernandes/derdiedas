@@ -1,4 +1,4 @@
-package com.derdiedas.controller.helper;
+package com.derdiedas.controller.utils;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 @Component
-public class ApiDocsHelper {
+public class ApiDocsUtils {
 
   public MvcResult appendApiDocsIfNecessaryAndReturnMvcResult(String apiDocsId, ResultActions resultActions)
       throws Exception {
