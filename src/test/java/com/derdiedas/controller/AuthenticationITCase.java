@@ -9,26 +9,31 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.derdiedas.controller.helper.UserHelper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 class AuthenticationITCase extends BaseITCase {
 
+  @Autowired
+  private UserHelper userHelper;
+
   @Test
   void authenticateUser_whenCredentialsAreValid_thenUserAuthenticatedIsSuccessfully() throws Exception {
-    createUser("email@email.com", "password", "first name", "last name", "users/create-user");
+    userHelper.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUser();
   }
 
   @Test
   void authenticateUser_whenCredentialsAreInvalid_thenUserAuthenticationIsUnsuccessful() throws Exception {
-    createUser("email@email.com", "password", "first name", "last name", "users/create-user");
+    userHelper.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUserWithWrongCredentials();
   }
 
   @Test
   void fetchUsers_whenUserIsNotLoggedIn_ThenReturnForbidden() throws Exception {
-    this.mockMvc
+    getMockMvc()
         .perform(get("/users").param("email", "email@email.com0"))
         .andDo(print())
         .andExpect(status().isForbidden())
@@ -41,7 +46,7 @@ class AuthenticationITCase extends BaseITCase {
         "    \"password\": \"password\"\n" +
         "}";
 
-    this.mockMvc
+    getMockMvc()
         .perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
@@ -57,7 +62,7 @@ class AuthenticationITCase extends BaseITCase {
         "    \"password\": \"passwordless\"\n" +
         "}";
 
-    this.mockMvc
+    getMockMvc()
         .perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))

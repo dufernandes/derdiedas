@@ -3,16 +3,21 @@ package com.derdiedas.controller;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.derdiedas.controller.helper.WordHelper;
 import com.derdiedas.model.LearningWord;
 import com.derdiedas.model.Word;
 import com.derdiedas.util.WordUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import javax.servlet.ServletContext;
 
 class LearningWordControllerITCase extends BaseITCase {
+
+  @Autowired
+  WordHelper wordHelper;
 
   @WithMockUser("email@email.com")
   @Test
@@ -33,6 +38,6 @@ class LearningWordControllerITCase extends BaseITCase {
     LearningWord schoolLearningWord = school.createLearningWord(false);
     learningWordRepository.save(schoolLearningWord);
 
-    studyWord(schoolLearningWord.getId(), SpringRestDocs.LearningWordsPage.SET_STATUS);
+    wordHelper.studyWord(getMockMvc(), schoolLearningWord.getId(), SpringRestDocs.LearningWordsPage.SET_STATUS);
   }
 }

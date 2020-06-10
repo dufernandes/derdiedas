@@ -4,10 +4,14 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.derdiedas.bootstrap.importer.ImporterFromFirstList;
+import com.derdiedas.controller.helper.UserAuthenticationHelper;
+import com.derdiedas.controller.helper.UserHelper;
+import com.derdiedas.controller.helper.WordHelper;
 import com.derdiedas.dto.LearningWordDto;
 import com.derdiedas.dto.UserDto;
 import com.derdiedas.repository.LearningWordRepository;
 import com.derdiedas.repository.WordRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,42 +40,52 @@ class EndToEndITCase extends BaseITCase {
   @Autowired
   private LearningWordRepository learningWordRepository;
 
+  @Autowired
+  private UserAuthenticationHelper userAuthenticationHelper;
+
+  @Autowired
+  private WordHelper wordHelper;
+
+  @Autowired
+  private UserHelper userHelper;
+
   @Test
   void createWords_createUsers_authenticateUser_userLearnWords_assignLearningWordsToUsers_verificationMadeForWordsAndArticles()
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
-    String authenticationKey = authenticateUser(EMAIL, PASSWORD);
+    UserDto userDto = userHelper.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    String authenticationKey = userAuthenticationHelper.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
     userDto =
-        assignWordsToUserWithAuthKey(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER, authenticationKey);
+        userHelper.assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER, authenticationKey);
     for (LearningWordDto w : userDto.getWordsStudying()) {
-      studyWordWithAuthKey(w.getId(), authenticationKey);
+      wordHelper.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
     }
 
-    assignWordsToUserWithAuthKey(userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN, authenticationKey);
+    userHelper.assignWordsToUserWithAuthKey(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, TUR, DER, RUCKEN, authenticationKey);
   }
 
+  @Disabled(value = "Test takes to long to run, thus it is disabled")
   @Test
   void userLearnAllWords()
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = createUser(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
-    String authenticationKey = authenticateUser(EMAIL, PASSWORD);
+    UserDto userDto = userHelper.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    String authenticationKey = userAuthenticationHelper.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
     userDto =
-        assignWordsToUser(userId, authenticationKey);
+        userHelper.assignWordsToUser(getMockMvc(), userId, authenticationKey);
     int studyPage = userDto.getStudyGroupPage();
     while (isNotEmpty(userDto.getWordsStudying())) {
       for (LearningWordDto w : userDto.getWordsStudying()) {
-        studyWordWithAuthKey(w.getId(), authenticationKey);
+        wordHelper.studyWordWithAuthKey(getMockMvc(), w.getId(), authenticationKey);
       }
 
-      userDto = assignWordsToUser(userId, authenticationKey);
+      userDto = userHelper.assignWordsToUser(getMockMvc(), userId, authenticationKey);
       assertNotEquals(studyPage, userDto.getStudyGroupPage());
       studyPage = userDto.getStudyGroupPage();
     }
