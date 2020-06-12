@@ -4,9 +4,11 @@ import static com.derdiedas.controller.QueryStringConstants.ACTION_ASSIGN_LEARNI
 import static com.derdiedas.controller.QueryStringConstants.FETCH_TYPE_EMAIL;
 import static com.derdiedas.controller.QueryStringConstants.FETCH_TYPE_ID;
 import static com.derdiedas.model.DefaultSettings.DEFAULT_NUMBER_OF_WORDS_PER_STUDY_GROUP;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -16,57 +18,85 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.derdiedas.dto.LearningWordDto;
 import com.derdiedas.dto.UserDto;
+import com.derdiedas.dto.UserToCreateDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class UserUtils {
 
   private final ApiDocsUtils apiDocsUtils;
   private final HttpHeadersUtils httpHeadersUtils;
   private final ObjectMapper objectMapper;
+  private final AssertionUtils assertionUtils;
 
   @Autowired
   public UserUtils(ApiDocsUtils apiDocsUtils,
                    HttpHeadersUtils httpHeadersUtils,
+                   AssertionUtils assertionUtils,
                    ObjectMapper objectMapper) {
     this.apiDocsUtils = apiDocsUtils;
     this.httpHeadersUtils = httpHeadersUtils;
+    this.assertionUtils = assertionUtils;
     this.objectMapper = objectMapper;
   }
 
-  public UserDto createUser(MockMvc mockMvc, String email, String password, String firstName, String lastName, String apiDocsId)
-      throws Exception {
-    String body = "{\n" +
-        "    \"email\": \"" + email + "\",\n" +
-        "    \"password\": \"" + password + "\",\n" +
-        "    \"firstName\": \"" + firstName + "\",\n" +
-        "    \"lastName\": \"" + lastName + "\"\n" +
-        "}";
+  public UserDto createUserValidatingAndGettingResponse(MockMvc mockMvc, String email, String password, String firstName, String lastName,
+                                                        String apiDocsId) throws Exception {
+
+    MvcResult mvcResult = createUser(mockMvc, email, password, firstName, lastName, apiDocsId);
+
+    if (!assertionUtils.assertHttpResponseIsOk(mvcResult)) {
+      return null;
+    }
+
+    String contentAsString = mvcResult.getResponse().getContentAsString();
+
+    objectMapper.readValue(contentAsString, UserDto.class);
+    UserDto userDto = objectMapper.readValue(contentAsString, UserDto.class);
+
+    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    assertAll(
+        () -> assertEquals(email, userDto.getEmail()),
+        () -> assertEquals(firstName, userDto.getFirstName()),
+        () -> assertEquals(lastName, userDto.getLastName())
+    );
+    return userDto;
+  }
+
+  public MvcResult createUser(MockMvc mockMvc, String email, String password, String firstName, String lastName,
+                               String apiDocsId) throws Exception {
+    UserToCreateDto userToCreateDto = UserToCreateDto.builder()
+        .email(email)
+        .password(password)
+        .firstName(firstName)
+        .lastName(lastName)
+        .build();
+
+    String requestBodyAsJsonString = objectMapper.writeValueAsString(userToCreateDto);
 
     ResultActions resultActions = mockMvc
         .perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(body))
-        .andDo(print()).andExpect(status().isOk())
-        .andExpect(jsonPath("$.email").value(email))
-        .andExpect(jsonPath("$.firstName").value(firstName))
-        .andExpect(jsonPath("$.lastName").value(lastName));
+            .content(requestBodyAsJsonString))
+        .andDo(print());
 
-    MvcResult mvcResult = apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
-
-    String contentAsString = mvcResult.getResponse().getContentAsString();
-    return objectMapper.readValue(contentAsString, UserDto.class);
+    return apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
   }
 
-  public UserDto createUser(MockMvc mockMvc, String email, String password, String firstName, String lastName) throws Exception {
-    return createUser(mockMvc, email, password, firstName, lastName, null);
+  public UserDto createUserValidatingAndGettingResponse(MockMvc mockMvc, String email, String password, String firstName, String lastName)
+      throws Exception {
+    return createUserValidatingAndGettingResponse(mockMvc, email, password, firstName, lastName, null);
   }
 
   public void findUserByEmail(MockMvc mockMvc, String email, String apiDocsId) throws Exception {
@@ -97,9 +127,10 @@ public class UserUtils {
     findUserById(mockMvc, userId, null);
   }
 
-  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName, String firstArticle,
-                                      String firstWord, String lastArticle, String lastWord, String apiDocsId,
-                                      String authenticationKey)
+  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName,
+                                   String firstArticle,
+                                   String firstWord, String lastArticle, String lastWord, String apiDocsId,
+                                   String authenticationKey)
       throws Exception {
 
     UserDto result = assignWordsToUser(mockMvc, userId, apiDocsId, authenticationKey);
@@ -121,7 +152,8 @@ public class UserUtils {
     return result;
   }
 
-  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String apiDocsId, String authenticationKey) throws Exception {
+  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String apiDocsId, String authenticationKey)
+      throws Exception {
     HttpHeaders httpHeaders = httpHeadersUtils.addAuthTokenToHttpHeaders(authenticationKey);
 
     ResultActions resultActions = mockMvc
@@ -142,24 +174,30 @@ public class UserUtils {
     return assignWordsToUser(mockMvc, userId, null, authenticationKey);
   }
 
-  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName, String firstArticle,
-                                      String firstWord, String lastArticle, String lastWord, String apiDocsId)
+  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName,
+                                   String firstArticle,
+                                   String firstWord, String lastArticle, String lastWord, String apiDocsId)
       throws Exception {
-    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord,
+    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle,
+        lastWord,
         apiDocsId, null);
   }
 
-  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName, String firstArticle,
-                                      String firstWord, String lastArticle, String lastWord) throws Exception {
-    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, null,
+  public UserDto assignWordsToUser(MockMvc mockMvc, Long userId, String email, String firstName, String lastName,
+                                   String firstArticle,
+                                   String firstWord, String lastArticle, String lastWord) throws Exception {
+    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle,
+        lastWord, null,
         null);
   }
 
-  public UserDto assignWordsToUserWithAuthKey(MockMvc mockMvc, Long userId, String email, String firstName, String lastName,
-                                                 String firstArticle,
-                                                 String firstWord, String lastArticle, String lastWord,
-                                                 String authenticationKey) throws Exception {
-    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle, lastWord, null,
+  public UserDto assignWordsToUserWithAuthKey(MockMvc mockMvc, Long userId, String email, String firstName,
+                                              String lastName,
+                                              String firstArticle,
+                                              String firstWord, String lastArticle, String lastWord,
+                                              String authenticationKey) throws Exception {
+    return assignWordsToUser(mockMvc, userId, email, firstName, lastName, firstArticle, firstWord, lastArticle,
+        lastWord, null,
         authenticationKey);
   }
 

@@ -53,22 +53,31 @@ class UserControllerITCase extends BaseITCase {
     assertNotNull(wac.getBean("userController"));
   }
 
+  @Test
+  void create_whenDataIsValid_thenReturnCreatedUser() throws Exception {
+    userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME,
+        SpringRestDocs.UsersPage.CREATE_USER);
+  }
+
   @WithMockUser("email@email.com")
   @Test
   void findUserByEmail_whenUsingValidEmail_thenReturnUserDto() throws Exception {
     userUtils
-        .createUser(getMockMvc(), "email@email.com0", "password", "first name0", "last name0", "users/create-user");
+        .createUserValidatingAndGettingResponse(getMockMvc(), "email@email.com0", "password", "first name0",
+            "last name0");
     userUtils
-        .createUser(getMockMvc(), "email@email.com1", "password", "first name1", "last name1", "users/create-user");
-    userUtils.findUserByEmail(getMockMvc(),"email@email.com0", SpringRestDocs.UsersPage.GET_USER_BY_EMAIL);
+        .createUserValidatingAndGettingResponse(getMockMvc(), "email@email.com1", "password", "first name1",
+            "last name1");
+    userUtils.findUserByEmail(getMockMvc(), "email@email.com0", SpringRestDocs.UsersPage.GET_USER_BY_EMAIL);
   }
 
   @WithMockUser("email@email.com")
   @Test
   void findUserById_whenUsingValidId_thenReturnUserDto() throws Exception {
     UserDto userDto =
-        userUtils.createUser(getMockMvc(), "emailxx@email.com0", "passwordxx", "first namexx", "last namexx",
-            "users/create-user");
+        userUtils
+            .createUserValidatingAndGettingResponse(getMockMvc(), "emailxx@email.com0", "passwordxx", "first namexx",
+                "last namexx");
     userUtils.findUserById(getMockMvc(), userDto.getId(), SpringRestDocs.UsersPage.GET_USER_BY_ID);
   }
 
@@ -81,7 +90,7 @@ class UserControllerITCase extends BaseITCase {
 
     UserDto userDto =
         userUtils
-            .createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SpringRestDocs.UsersPage.CREATE_USER);
+            .createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
     Long userId = userDto.getId();
 
     userUtils.assignWordsToUser(getMockMvc(), userId, EMAIL, FIRST_NAME, LAST_NAME, DIE, ZEIT, DAS, ZIMMER,

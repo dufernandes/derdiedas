@@ -21,13 +21,13 @@ class AuthenticationITCase extends BaseITCase {
 
   @Test
   void authenticateUser_whenCredentialsAreValid_thenUserAuthenticatedIsSuccessfully() throws Exception {
-    userUtils.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
+    userUtils.createUserValidatingAndGettingResponse(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUser();
   }
 
   @Test
   void authenticateUser_whenCredentialsAreInvalid_thenUserAuthenticationIsUnsuccessful() throws Exception {
-    userUtils.createUser(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
+    userUtils.createUserValidatingAndGettingResponse(getMockMvc(),"email@email.com", "password", "first name", "last name", "users/create-user");
     authenticateUserWithWrongCredentials();
   }
 

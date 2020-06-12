@@ -46,7 +46,7 @@ class EndToEndITCase extends BaseITCase {
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userUtils.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    UserDto userDto = userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
     String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
@@ -68,7 +68,7 @@ class EndToEndITCase extends BaseITCase {
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userUtils.createUser(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    UserDto userDto = userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
     String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
