@@ -20,6 +20,16 @@ import org.springframework.web.context.WebApplicationContext;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+/**
+ * Tests which extends this class will create integration tests for
+ * <ul>
+ *   <li>Integration among API call, business logic and persistense layer</li>
+ * </ul>
+ * It will not be tested:
+ * <ul>
+ *   <li>REST API request validations</li>
+ * </ul>
+ */
 @SpringBootTest
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public class BaseITCase {

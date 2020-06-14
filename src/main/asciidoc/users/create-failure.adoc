@@ -1,0 +1,15 @@
+[[users-create-failure]]
+
+=== User creation failure
+
+Sample call for failing to creating an user. In this case
+the first name was set as null.
+
+.curl sample
+include::{snippets}/users/create-user-failure/curl-request.adoc[]
+
+.request
+include::{snippets}/users/create-user-failure/http-request.adoc[]
+
+.response
+include::{snippets}/users/create-user-failure/http-response.adoc[]

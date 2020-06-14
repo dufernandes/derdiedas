@@ -7,7 +7,8 @@ public class SpringRestDocs {
   }
 
   public static class LearningWordsPage {
-    public static final String SET_STATUS = "learning-words/set-status";
+    public static final String SET_STATUS_LEARNED = "learning-words/set-status-learned";
+    public static final String SET_STATUS_NOT_LEARNED = "learning-words/set-status-not-learned";
   }
 
   public static class UsersPage {

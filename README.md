@@ -229,6 +229,10 @@ Here one may find many references which were quite useful for creating this proj
  - Restful API design: methods - https://restful-api-design.readthedocs.io/en/latest/methods.html 
  - PUT versus POST - https://stackoverflow.com/questions/630453/put-vs-post-in-rest
  
+ ### References for Spring integration tests
+ 
+ - Testing the Web Layer - https://spring.io/guides/gs/testing-web/
+ 
  ### References to Postgres
  
  - Install Postgres on Ubuntu - https://help.ubuntu.com/community/PostgreSQL

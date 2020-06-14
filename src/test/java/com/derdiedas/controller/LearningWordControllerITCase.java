@@ -31,13 +31,25 @@ class LearningWordControllerITCase extends BaseITCase {
 
   @WithMockUser("email@email.com")
   @Test
-  void updateLearningWordStudied_whenWordIsValid_thenCheckUpdatedStatus() throws Exception {
+  void updateLearningWordStudied_whenWordIsValidAndWordIsLearned_thenCheckUpdatedStatusAsWordLearned() throws Exception {
     Word school = WordUtil.createWordSchoolWithoutId();
 
     wordRepository.save(school);
     LearningWord schoolLearningWord = school.createLearningWord(false);
     learningWordRepository.save(schoolLearningWord);
 
-    wordUtils.studyWord(getMockMvc(), schoolLearningWord.getId(), SpringRestDocs.LearningWordsPage.SET_STATUS);
+    wordUtils.setLearningWordLearnedStatus(getMockMvc(), schoolLearningWord.getId(), true, SpringRestDocs.LearningWordsPage.SET_STATUS_LEARNED);
+  }
+
+  @WithMockUser("email@email.com")
+  @Test
+  void updateLearningWordStudied_whenWordIsValidAndWordIsNotLearned_thenCheckUpdatedStatusAsWordNotLearned() throws Exception {
+    Word school = WordUtil.createWordSchoolWithoutId();
+
+    wordRepository.save(school);
+    LearningWord schoolLearningWord = school.createLearningWord(true);
+    learningWordRepository.save(schoolLearningWord);
+
+    wordUtils.setLearningWordLearnedStatus(getMockMvc(), schoolLearningWord.getId(), false, SpringRestDocs.LearningWordsPage.SET_STATUS_NOT_LEARNED);
   }
 }

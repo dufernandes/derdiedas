@@ -4,11 +4,24 @@
 
 Given a Learning Word, set it either as studied or not studied.
 
+Firstly, the word is set as studied:
+
 .curl sample
-include::{snippets}/learning-words/set-status/curl-request.adoc[]
+include::{snippets}/learning-words/set-status-learned/curl-request.adoc[]
 
 .request
-include::{snippets}/learning-words/set-status/http-request.adoc[]
+include::{snippets}/learning-words/set-status-learned/http-request.adoc[]
 
 .response
-include::{snippets}/learning-words/set-status/http-response.adoc[]
+include::{snippets}/learning-words/set-status-learned/http-response.adoc[]
+
+Now, the word is set as not studied:
+
+.curl sample
+include::{snippets}/learning-words/set-status-not-learned/curl-request.adoc[]
+
+.request
+include::{snippets}/learning-words/set-status-not-learned/http-request.adoc[]
+
+.response
+include::{snippets}/learning-words/set-status-not-learned/http-response.adoc[]

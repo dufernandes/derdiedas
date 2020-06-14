@@ -1,5 +1,6 @@
 package com.derdiedas.controller.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -32,14 +33,14 @@ public class WordUtils {
     this.objectMapper = objectMapper;
   }
 
-  public void studyWord(MockMvc mockMvc, long learningWordId, String apiDocsId, String authenticationKey) throws Exception {
+  public void setLearningWordLearnedStatus(MockMvc mockMvc, long learningWordId, boolean isStudied, String apiDocsId, String authenticationKey) throws Exception {
 
     HttpHeaders httpHeaders = httpHeadersUtils.addAuthTokenToHttpHeaders(authenticationKey);
 
     ResultActions resultActions = mockMvc
         .perform(put("/learningWords/" + learningWordId)
             .headers(httpHeaders)
-            .param("isStudied", Boolean.TRUE.toString())
+            .param("isStudied", Boolean.toString(isStudied))
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print()).andExpect(status().isOk());
 
@@ -49,7 +50,11 @@ public class WordUtils {
     LearningWordDto result = objectMapper.readValue(contentAsString, LearningWordDto.class);
 
     assertNotNull(result);
-    assertTrue(result.isStudied());
+    assertEquals(isStudied, result.isStudied());
+  }
+
+  public void studyWord(MockMvc mockMvc, long learningWordId, String apiDocsId, String authenticationKey) throws Exception {
+    setLearningWordLearnedStatus(mockMvc, learningWordId, true, apiDocsId, authenticationKey);
   }
 
   public void studyWord(MockMvc mockMvc,long learningWordId) throws Exception {
@@ -58,6 +63,10 @@ public class WordUtils {
 
   public void studyWord(MockMvc mockMvc, long learningWordId, String apiDocsId) throws Exception {
     studyWord(mockMvc, learningWordId, apiDocsId, null);
+  }
+
+  public void setLearningWordLearnedStatus(MockMvc mockMvc, long learningWordId, boolean isStudied, String apiDocsId) throws Exception {
+    setLearningWordLearnedStatus(mockMvc, learningWordId, isStudied, apiDocsId, null);
   }
 
   public void studyWordWithAuthKey(MockMvc mockMvc,long learningWordId, String authenticationKey) throws Exception {

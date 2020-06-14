@@ -6,6 +6,8 @@ Collection of API endpoints handling users
 
 include::create.adoc[]
 
+include::create-failure.adoc[]
+
 include::get-by-id.adoc[]
 
 include::get-by-email.adoc[]
