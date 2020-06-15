@@ -9,6 +9,7 @@ public class SpringRestDocs {
   public static class LearningWordsPage {
     public static final String SET_STATUS_LEARNED = "learning-words/set-status-learned";
     public static final String SET_STATUS_NOT_LEARNED = "learning-words/set-status-not-learned";
+    public static final String NO_STATUS_SET = "learning-words/no-status-set";
   }
 
   public static class UsersPage {

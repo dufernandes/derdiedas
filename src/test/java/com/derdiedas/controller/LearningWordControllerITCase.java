@@ -17,7 +17,7 @@ import javax.servlet.ServletContext;
 class LearningWordControllerITCase extends BaseITCase {
 
   @Autowired
-  WordUtils wordUtils;
+  private WordUtils wordUtils;
 
   @WithMockUser("email@email.com")
   @Test

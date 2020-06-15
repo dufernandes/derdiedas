@@ -1,0 +1,14 @@
+[[learning-words-no-status-set]]
+
+=== Learning word service called with no status
+
+Given a Learning Word, the status is not set. For this case, a not OK status is returned.
+
+.curl sample
+include::{snippets}/learning-words/no-status-set/curl-request.adoc[]
+
+.request
+include::{snippets}/learning-words/no-status-set/http-request.adoc[]
+
+.response
+include::{snippets}/learning-words/no-status-set/http-response.adoc[]
