@@ -10,7 +10,9 @@ The idea is simple:
 5. when all words from the set is learned, assign a new set to the user - _PUT /users/{userId}?action=assignLearningWords_;
 6. when the user has learned all words, the user is with her learning.
 
-For more API details, please have a look at the [Generating and accessing REST API documentation](#Generating-and-accessing-rest-api-documentation) section
+For more API details, please have a look at the [Generating and accessing REST API documentation](#Generating-and-accessing-rest-api-documentation) section.
+
+For a better understanding of the architectural decisions of this project, please check its [wiki](https://github.com/dufernandes/derdiedas/wiki).
 
 ## Requirements
 
