@@ -88,4 +88,8 @@ public class WordUtils {
   public void studyWordWithAuthKey(MockMvc mockMvc, long learningWordId, String authenticationKey) throws Exception {
     studyWord(mockMvc, learningWordId, null, authenticationKey);
   }
+
+  public void studyWordWithAuthKey(MockMvc mockMvc, long learningWordId, String apiDocsId, String authenticationKey) throws Exception {
+    studyWord(mockMvc, learningWordId, apiDocsId, authenticationKey);
+  }
 }

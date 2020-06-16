@@ -12,16 +12,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.derdiedas.authentication.Credentials;
 import com.derdiedas.controller.SpringRestDocs;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 @Component
 public class UserAuthenticationUtils {
 
-  public String authenticateUser(MockMvc mockMvc, String userName, String password) throws Exception {
+  private final ApiDocsUtils apiDocsUtils;
+
+  @Autowired
+  public UserAuthenticationUtils(ApiDocsUtils apiDocsUtils) {
+    this.apiDocsUtils = apiDocsUtils;
+  }
+
+  public String authenticateUser(MockMvc mockMvc, String userName, String password, String apiDocsId) throws Exception {
 
     Credentials credentials = new Credentials();
     credentials.setUsername(userName);
@@ -29,16 +38,19 @@ public class UserAuthenticationUtils {
     ObjectMapper jsonTransformer = new ObjectMapper();
     String requestBodyAsJsonString = jsonTransformer.writeValueAsString(credentials);
 
-    MvcResult mvcResult = mockMvc
+    ResultActions resultActions = mockMvc
         .perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestBodyAsJsonString))
-        .andDo(print()).andExpect(status().isOk())
-        .andDo(MockMvcRestDocumentation.document(SpringRestDocs.LoginPage.LOGIN_SUCCESSFUL,
-            preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
-        .andReturn();
+        .andDo(print()).andExpect(status().isOk());
+
+    MvcResult mvcResult = apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
 
     return mvcResult.getResponse().getHeader(HEADER_STRING_AUTHORIZATION);
+  }
+
+  public String authenticateUser(MockMvc mockMvc, String userName, String password) throws Exception {
+    return authenticateUser(mockMvc, userName, password, null);
   }
 
 }

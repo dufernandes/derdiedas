@@ -1,0 +1,90 @@
+[[sample-flow]]
+
+== Sample Flow
+
+Here one can see how the process of users learning words should work. For such, a flow is presented with the following steps:
+
+. create user _A_;
+. authenticate user _A_;
+. assign words to user _A_;
+. set the first word of user _A_ as learned;
+. set the second word of user _A_ as not learned;
+. set the third word of user _A_ as learned;
+. fetch user _A_ to check the words he lerned;
+
+Starting, user _A_ is created:
+
+.curl sample
+include::{snippets}/sample-flow/create-user/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/create-user/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/create-user/http-response.adoc[]
+
+Then, user _A_ is authenticated:
+
+.curl sample
+include::{snippets}/sample-flow/login/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/login/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/login/http-response.adoc[]
+
+Now, learning words are assigned to user _A_:
+
+.curl sample
+include::{snippets}/sample-flow/assign-words-to-the-user/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/assign-words-to-the-user/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/assign-words-to-the-user/http-response.adoc[]
+
+The learning process starts now, and the first word is learned successfully:
+
+.curl sample
+include::{snippets}/sample-flow/learn-first-word/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/learn-first-word/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/learn-first-word/http-response.adoc[]
+
+The second word, however, is not learned, thus the following request is made:
+
+.curl sample
+include::{snippets}/sample-flow/do-not-learn-second-word/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/do-not-learn-second-word/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/do-not-learn-second-word/http-response.adoc[]
+
+The third word, fortunately, is learned:
+
+.curl sample
+include::{snippets}/sample-flow/learn-third-word/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/learn-third-word/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/learn-third-word/http-response.adoc[]
+
+As a last step, user _A_ is fetched so one can see what are her words' status:
+
+.curl sample
+include::{snippets}/sample-flow/fetch-users-with-learning-words/curl-request.adoc[]
+
+.request
+include::{snippets}/sample-flow/fetch-users-with-learning-words/http-request.adoc[]
+
+.response
+include::{snippets}/sample-flow/fetch-users-with-learning-words/http-response.adoc[]

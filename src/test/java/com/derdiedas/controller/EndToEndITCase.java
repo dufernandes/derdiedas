@@ -46,7 +46,9 @@ class EndToEndITCase extends BaseITCase {
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    UserDto
+        userDto =
+        userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
     String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 
@@ -62,13 +64,42 @@ class EndToEndITCase extends BaseITCase {
         authenticationKey);
   }
 
+  @Test
+  void testSampleFlow() throws Exception {
+    importer.doImport();
+
+    UserDto userDto =
+        userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME,
+            SpringRestDocs.SampleFlowPage.CREATE_USER);
+    String authenticationKey =
+        userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD, SpringRestDocs.SampleFlowPage.LOGIN);
+    Long userId = userDto.getId();
+
+    userDto = userUtils.assignWordsToUser(getMockMvc(), userId, SpringRestDocs.SampleFlowPage.ASSIGN_WORDS_TO_THE_USER, authenticationKey);
+    LearningWordDto[] learningWordDtos = userDto.getWordsStudying().toArray(new LearningWordDto[]{});
+
+    wordUtils
+        .studyWordWithAuthKey(getMockMvc(), learningWordDtos[0].getId(), SpringRestDocs.SampleFlowPage.LEARN_FIRST_WORD,
+            authenticationKey);
+    wordUtils.setLearningWordLearnedStatus(getMockMvc(), learningWordDtos[1].getId(), false,
+        SpringRestDocs.SampleFlowPage.DO_NOT_LEARN_SECOND_WORD, authenticationKey);
+    wordUtils
+        .studyWordWithAuthKey(getMockMvc(), learningWordDtos[2].getId(), SpringRestDocs.SampleFlowPage.LEARN_THIRD_WORD,
+            authenticationKey);
+
+    userUtils.findUserById(getMockMvc(), userDto.getId(), SpringRestDocs.SampleFlowPage.FETCH_USER_WITH_LEARNING_WORDS,
+        authenticationKey);
+  }
+
   @Disabled(value = "Test takes to long to run, thus it is disabled")
   @Test
   void userLearnAllWords()
       throws Exception {
     importer.doImport();
 
-    UserDto userDto = userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
+    UserDto
+        userDto =
+        userUtils.createUserValidatingAndGettingResponse(getMockMvc(), EMAIL, PASSWORD, FIRST_NAME, LAST_NAME);
     String authenticationKey = userAuthenticationUtils.authenticateUser(getMockMvc(), EMAIL, PASSWORD);
     Long userId = userDto.getId();
 

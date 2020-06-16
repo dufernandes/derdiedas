@@ -113,14 +113,22 @@ public class UserUtils {
     findUserByEmail(mockMvc, email, null);
   }
 
-  public void findUserById(MockMvc mockMvc, Long userId, String apiDocsId) throws Exception {
+  public void findUserById(MockMvc mockMvc, Long userId, String apiDocsId, String authenticationKey) throws Exception {
+
+    HttpHeaders httpHeaders = httpHeadersUtils.addAuthTokenToHttpHeaders(authenticationKey);
+
     ResultActions resultActions = mockMvc
-        .perform(get("/users").param("fetchType", FETCH_TYPE_ID).param("idOrEmail", userId.toString()))
+        .perform(get("/users").param("fetchType", FETCH_TYPE_ID).param("idOrEmail", userId.toString())
+        .headers(httpHeaders))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(userId));
 
     apiDocsUtils.appendApiDocsIfNecessaryAndReturnMvcResult(apiDocsId, resultActions);
+  }
+
+  public void findUserById(MockMvc mockMvc, Long userId, String apiDocsId) throws Exception {
+    findUserById(mockMvc, userId, apiDocsId, null);
   }
 
   public void findUserById(MockMvc mockMvc, Long userId) throws Exception {
