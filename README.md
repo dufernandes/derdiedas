@@ -1,8 +1,14 @@
 # Der Die Das REST API
 
-This is a software for helping memorizing the German articles along with their respective words.
+This is a software for helping memorizing the German articles along with their respective words. This platform provides the backend API to accomplish the described goal.
 
-This platform provides the backend API to accomplish the described goal.
+The idea is simple:
+1. you register a user - _POST /users_;
+2. you authenticate the user - _POST /login_
+3. you assign a set of words to this user _PUT /users/{userId}?action=assignLearningWords_;
+4. when the user learns a word, save this status - _PUT /learningWords/{learningWordId}?isStudied=true_;
+5. when all words from the set is learned, assign a new set to the user - _PUT /users/{userId}?action=assignLearningWords_;
+6. when the user has learned all words, the user is with her learning.
 
 ## Requirements
 
@@ -153,6 +159,12 @@ After starting the application, one can access the embedded H2 database via the 
  - Password: leave it empty
  
 ## Documentation
+
+### Generating and accessing REST API documentation
+
+API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`. Alternatively, one may access this documentation, after starting the software at the following URL: http;//APP_DOMAIN/docs/api/index.html. For instance, running in the local environment, the URL would be: [http://localhost:8080/docs/api/index.html](http://localhost:8080/docs/api/index.html). 
+
+Please note that the documentation will be available only after running `mvn clean verify package`, and later `mvn spring-boot:run`.
  
 ### Generating and accessing Javadoc
 
@@ -185,12 +197,6 @@ docker container run -p 80:8080 derdiedas
 ```
 
 Now, one can access http://localhost and check that the application is up and running.
-
-### Generating and accessing REST API documentation
-
-API documentation is provided by example. For that, while running integration tests, the documentation is created based on these results. Thus, after running `mvn clean verify package` on can find the REST API sample documentation at `derdiedas/target/generated-docs/index.html`. Alternatively, one may access this documentation, after starting the software at the following URL: http;//APP_DOMAIN/docs/api/index.html. For instance, running in the local environment, the URL would be: [http://localhost:8080/docs/api/index.html](http://localhost:8080/docs/api/index.html). 
-
-Please note that the documentation will be available only after running `mvn clean verify package`, and later `mvn spring-boot:run`.
 
 ## References
 
