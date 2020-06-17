@@ -24,22 +24,199 @@ In order to handle this project appropriately, please setup the following tools:
  - IntelliJ was used for development, but Eclipse should work
  - Curl (only for running examples)
 
-## Cloning the project
+## Quick start
 
-In order to clone the project, please execute either one of the following commands:
+Here is how one can quickly use and understand this application. All instructions will be given assuming a local environment.
 
-for cloning with SSH
+Firstly, clone the project in your local environment, either by SSH issing this command `git clone git@github.com:dufernandes/derdiedas.git
+` or by HTTPS executing this one: `https://github.com/dufernandes/derdiedas.git`.
+
+In the root of the cloned project, open a terminal and run the command below in order to compile, run all tests and generate the documentation:
+
+ ```
+ mvn clean verify package
+ ```
+
+Now start the application on port `8080`:
+
+ ```
+ mvn spring-boot:run
+ ```
+
+After that, the application is accessed via the URL http://localhost:8080. Note that the a in-memory H2 database is used.
+
+The next step is to follow the procedures described in the beginning of this documentation. Thus, first a user is created by using the following command, in a separate terminal window: 
+
 ```
-git clone git@github.com:dufernandes/derdiedas.git
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "email": "email@email.com",
+    "password": "password",
+    "firstName": "first name",
+    "lastName": "last name"
+}' http://localhost:8080/users
 ```
 
-or for cloning with HTTPS
+A user with email "email@emaiol.com" is created. This is the login for the user. Next, authenticate the user with the following command:
 
 ```
-https://github.com/dufernandes/derdiedas.git
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "username": "email@email.com",
+    "password": "password"
+}' http://localhost:8080/login
 ```
 
-If you have problems cloning the project, you can access it by clicking [here](https://github.com/dufernandes/derdiedas).
+Here is an example of the HTTP Response from the last command:
+
+```
+HTTP/1.1 200 
+Authorization: Bearer xxx.yyy.zzz
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+userId: 4437
+X-Frame-Options: DENY
+Content-Length: 0
+Date: Sun, 24 Feb 2019 19:22:02 GMT
+```
+
+Please note the `Authorization` part in the HTTP Header. One must copy its content into the following command, which will assign words to the user with email `email@email.com` and id `4437` (taken also from the last response's header value of key `userId`).
+
+```
+curl 'http://localhost:8080/users/4437?action=assignLearningWords' -i -X PUT \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer xxx.yyy.zzz'
+```
+
+Here is the response holding the words assign for the user to learn:
+
+```
+HTTP/1.1 200 OK
+Pragma: no-cache
+X-XSS-Protection: 1; mode=block
+Content-Length: 1824
+Expires: 0
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+
+{
+  "id" : 4437,
+  "email" : "emailAA@email.com0",
+  "firstName" : "firstAA name0",
+  "lastName" : "lastAA name0",
+  "wordsPerGroup" : 10,
+  "studyGroupPage" : 0,
+  "wordsStudying" : [ {
+    "id" : 4439,
+    "word" : {
+      "id" : 2655,
+      "article" : "das",
+      "word" : "Zimmer",
+      "translation" : "room"
+    },
+    "studied" : false
+  }, {
+    "id" : 4445,
+    "word" : {
+      "id" : 2650,
+      "article" : "der",
+      "word" : "Weg",
+      "translation" : "way"
+    },
+    "studied" : false
+  }, {
+    "id" : 4443,
+    "word" : {
+      "id" : 2649,
+      "article" : "der",
+      "word" : "Tag",
+      "translation" : "day"
+    },
+    "studied" : false
+  }, {
+    "id" : 4444,
+    "word" : {
+      "id" : 2651,
+      "article" : "das",
+      "word" : "Auge",
+      "translation" : "eye"
+    },
+    "studied" : false
+  }, {
+    "id" : 4447,
+    "word" : {
+      "id" : 2653,
+      "article" : "der",
+      "word" : "Kopf",
+      "translation" : "head"
+    },
+    "studied" : false
+  }, {
+    "id" : 4441,
+    "word" : {
+      "id" : 2648,
+      "article" : "die",
+      "word" : "Hand",
+      "translation" : "hand"
+    },
+    "studied" : false
+  }, {
+    "id" : 4442,
+    "word" : {
+      "id" : 2646,
+      "article" : "die",
+      "word" : "Zeit",
+      "translation" : "time"
+    },
+    "studied" : false
+  }, {
+    "id" : 4438,
+    "word" : {
+      "id" : 2647,
+      "article" : "der",
+      "word" : "Mann",
+      "translation" : "man"
+    },
+    "studied" : false
+  }, {
+    "id" : 4440,
+    "word" : {
+      "id" : 2652,
+      "article" : "das",
+      "word" : "Ding",
+      "translation" : "thing"
+    },
+    "studied" : false
+  }, {
+    "id" : 4446,
+    "word" : {
+      "id" : 2654,
+      "article" : "das",
+      "word" : "Jahr",
+      "translation" : "year"
+    },
+    "studied" : false
+  } ]
+}
+```
+With the words, in hands, whenever the user has lerned one she can set it as studied using the following command:
+
+```
+curl 'http://localhost:8080/learningWords/4439?isStudied=true' -i -X PUT \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Bearer xxx.yyy.zzz'
+```
+
+Note that the word id `4439` was used, representing the `das Zimmer`. 
+
+Now, one can learn more words, and when she is finished with this group, she can pick new ones assigning words again.
+
+Observe that in all services the `Authorization` was sent in order to make sure the logged in user accesses the services.
+
+In order to access the full API documentation, please go to the [Generating and accessing REST API documentation](#Generating-and-accessing-rest-api-documentation) section.
 
 ## How to test and start the application via command line
 
@@ -83,59 +260,6 @@ mvn spring-boot:run -Dspring-boot.run.profiles=localcockroachdb
 ```
 
 Note that this is only a manner to show that this application can be easily run in different databases. In order to set it up properly, it is highly recommended to go through [this tutorial](https://www.baeldung.com/cockroachdb-java).
-
-## Running an example
-
-Next, one can see on how to run a small example authenticating an fetching users using `curl`.
-
-In order to create a user, run the following command:
-
-```
-curl -i -H "Content-Type: application/json" -X POST -d '{
-    "email": "email@email.com",
-    "password": "password",
-    "firstName": "first name",
-    "lastName": "last name"
-}' http://localhost:8080/users
-```
-
-Here a user with email "email@emaiol.com" is created. This is the login for the user.
-
-In order to authenticate the user, run the following command:
-
-```
-curl -i -H "Content-Type: application/json" -X POST -d '{
-    "username": "email@email.com",
-    "password": "password"
-}' http://localhost:8080/login
-```
-
-Here is an example of the HTTP Response from the last command:
-
-```
-HTTP/1.1 200 
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbWFpbEBlbWFpbC5jb20iLCJleHAiOjE1NTE5MDAxMjJ9.hVuoNXh1VUq_w4zWZnyzjbg-LXIn4f5Z9o_x6rnW5Z7LHTseGfBi65ichqvyio8693-YOY5ZDn0IG2TNx1fRPg
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
-Content-Length: 0
-Date: Sun, 24 Feb 2019 19:22:02 GMT
-```
-
-Please note the `Authorization` part in the HTTP Header. One must copy its content into the following command, which will list a user data with email "email@email.com".
-
-```
-curl -i -H "Content-Type: application/json" \
--H "Authorization: Bearer xxx.yyy.zzz" \
--X GET "http://localhost:8080/users?fetchType=email&idOrEmail=email@email.com"
-```
-
-After running the command above, note that the body of the HTTP Response will contain the user data, except the password.
-
-For accessing the full API documentation, please go to the [Generating and accessing REST API documentation](#Generating-and-accessing-rest-api-documentation) section.
 
 ## Test coverage
 
