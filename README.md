@@ -374,3 +374,12 @@ Here one may find many references which were quite useful for creating this proj
  ### References to CockroachDB
  
  - Guide to CockroachDB in Java - https://www.baeldung.com/cockroachdb-java
+ 
+ ## Author
+ 
+ - Eduardo Antonio Cecilio Fernandes
+ - e-mail: eduardo.cecilio@gmail.com
+ 
+ ## License
+ 
+ - [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
