@@ -242,12 +242,12 @@ mvn spring-boot:run
 
 ## Running the application with local database
 
-Here is is shown how to run the application using a local database. Postgres is configured by default, however changing the database is simple enough. Please note that all queries are created using JPQL, thus one can use all JPA supported SQL Databases.
+Here is shown how to run the application using a local database. Postgres is configured by default, however changing the database is simple enough. Please note that all queries are created using JPQL, thus one can use all JPA supported SQL Databases.
 
 1. Setup your local Postgres. [Here](https://help.ubuntu.com/community/PostgreSQL) is a nice tutorial for Ubuntu. Install the server and the client (PgAdmin).
 2. Create a user for accessing databases. Please check the config file (`resources/application-localdb.properties`) to set it up.
 2. Create the database. It is used one called `derdiedas`, which of course can be easily changed.
-3. The the application using the `localdb` profile, as follows: `mvn spring-boot:run -Dspring-boot.run.profiles=localdb`
+3. The application using the `localdb` profile, as follows: `mvn spring-boot:run -Dspring-boot.run.profiles=localdb`
 
 For now, it is configured for all tables to be created. Also, the database is populated via the script in `com.derdiedas.bootstrap.DataLoader`.
 
