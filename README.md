@@ -234,7 +234,7 @@ Should you wish only to run the unit tests, execute the following command:
 mvn verify -Dit.skip=true
 ```
 
-For one to start the application, run the following comman:
+For one to start the application, run the following command:
 
 ```
 mvn spring-boot:run
