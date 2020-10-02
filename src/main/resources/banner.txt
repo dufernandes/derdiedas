@@ -1,0 +1,2 @@
+
+${AnsiColor.RED}+ ${AnsiColor.YELLOW}+ ${AnsiColor.GREEN}+ ${AnsiColor.BRIGHT_CYAN}Der Die Das  ${AnsiColor.DEFAULT}: ${AnsiColor.BRIGHT_WHITE}${AnsiBackground.GREEN} REST API ${AnsiBackground.DEFAULT}${AnsiColor.DEFAULT}
