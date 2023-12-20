@@ -1,6 +1,6 @@
 # Der Die Das REST API
 
-![Build and tests state](https://github.com/dufernandes/derdiedas/actions/workflows/maven.yml/badge.svg?branch=master)
+![Build and tests state](https://github.com/dufernandes/derdiedas/actions/workflows/maven.yml/badge.svg?branch=master) [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This is a software for helping memorizing the German articles along with their respective words. This platform provides the backend API to accomplish the described goal.
 
